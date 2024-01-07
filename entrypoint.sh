@@ -4,4 +4,4 @@
 git submodule update --init --recursive
 
 # Your other entrypoint logic here
-exec "$@"
+# exec "$@"

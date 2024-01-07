@@ -1,0 +1,148 @@
+[0.929s] DEBUG:colcon:Command line arguments: ['/usr/bin/colcon', 'build']
+[0.929s] DEBUG:colcon:Parsed command line arguments: Namespace(log_base=None, log_level=None, verb_name='build', build_base='build', install_base='install', merge_install=False, symlink_install=False, test_result_base=None, continue_on_error=False, executor='parallel', parallel_workers=20, event_handlers=None, ignore_user_meta=False, metas=['./colcon.meta'], base_paths=['.'], packages_ignore=None, packages_ignore_regex=None, paths=None, packages_up_to=None, packages_up_to_regex=None, packages_above=None, packages_above_and_dependencies=None, packages_above_depth=None, packages_select_by_dep=None, packages_skip_by_dep=None, packages_skip_up_to=None, packages_select_build_failed=False, packages_skip_build_finished=False, packages_select_test_failures=False, packages_skip_test_passed=False, packages_select=None, packages_skip=None, packages_select_regex=None, packages_skip_regex=None, packages_start=None, packages_end=None, cmake_args=None, cmake_target=None, cmake_target_skip_unavailable=False, cmake_clean_cache=False, cmake_clean_first=False, cmake_force_configure=False, ament_cmake_args=None, catkin_cmake_args=None, catkin_skip_building_tests=False, verb_parser=<colcon_defaults.argument_parser.defaults.DefaultArgumentsDecorator object at 0x7f04a419a350>, verb_extension=<colcon_core.verb.build.BuildVerb object at 0x7f04a419bbb0>, main=<bound method BuildVerb.main of <colcon_core.verb.build.BuildVerb object at 0x7f04a419bbb0>>)
+[0.970s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) check parameters
+[0.970s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) check parameters
+[0.970s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) check parameters
+[0.970s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) check parameters
+[0.970s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) discover
+[0.970s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) discover
+[0.970s] INFO:colcon.colcon_core.package_discovery:Crawling recursively for packages in '/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws'
+[0.970s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ignore', 'ignore_ament_install']
+[0.970s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore'
+[0.970s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore_ament_install'
+[0.970s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_pkg']
+[0.970s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_pkg'
+[0.970s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_meta']
+[0.970s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_meta'
+[0.970s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ros']
+[0.970s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ros'
+[0.980s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['cmake', 'python']
+[0.980s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'cmake'
+[0.980s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python'
+[0.980s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['python_setup_py']
+[0.980s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python_setup_py'
+[0.980s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extensions ['ignore', 'ignore_ament_install']
+[0.981s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extension 'ignore'
+[0.981s] Level 1:colcon.colcon_core.package_identification:_identify(build) ignored
+[0.981s] Level 1:colcon.colcon_core.package_identification:_identify(image_samples) by extensions ['ignore', 'ignore_ament_install']
+[0.981s] Level 1:colcon.colcon_core.package_identification:_identify(image_samples) by extension 'ignore'
+[0.981s] Level 1:colcon.colcon_core.package_identification:_identify(image_samples) by extension 'ignore_ament_install'
+[0.981s] Level 1:colcon.colcon_core.package_identification:_identify(image_samples) by extensions ['colcon_pkg']
+[0.981s] Level 1:colcon.colcon_core.package_identification:_identify(image_samples) by extension 'colcon_pkg'
+[0.981s] Level 1:colcon.colcon_core.package_identification:_identify(image_samples) by extensions ['colcon_meta']
+[0.981s] Level 1:colcon.colcon_core.package_identification:_identify(image_samples) by extension 'colcon_meta'
+[0.981s] Level 1:colcon.colcon_core.package_identification:_identify(image_samples) by extensions ['ros']
+[0.981s] Level 1:colcon.colcon_core.package_identification:_identify(image_samples) by extension 'ros'
+[0.981s] Level 1:colcon.colcon_core.package_identification:_identify(image_samples) by extensions ['cmake', 'python']
+[0.981s] Level 1:colcon.colcon_core.package_identification:_identify(image_samples) by extension 'cmake'
+[0.981s] Level 1:colcon.colcon_core.package_identification:_identify(image_samples) by extension 'python'
+[0.981s] Level 1:colcon.colcon_core.package_identification:_identify(image_samples) by extensions ['python_setup_py']
+[0.981s] Level 1:colcon.colcon_core.package_identification:_identify(image_samples) by extension 'python_setup_py'
+[0.981s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extensions ['ignore', 'ignore_ament_install']
+[0.981s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extension 'ignore'
+[0.981s] Level 1:colcon.colcon_core.package_identification:_identify(install) ignored
+[0.981s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extensions ['ignore', 'ignore_ament_install']
+[0.981s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extension 'ignore'
+[0.981s] Level 1:colcon.colcon_core.package_identification:_identify(log) ignored
+[0.981s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['ignore', 'ignore_ament_install']
+[0.981s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ignore'
+[0.981s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ignore_ament_install'
+[0.981s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['colcon_pkg']
+[0.981s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'colcon_pkg'
+[0.981s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['colcon_meta']
+[0.981s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'colcon_meta'
+[0.981s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['ros']
+[0.981s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ros'
+[0.982s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['cmake', 'python']
+[0.982s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'cmake'
+[0.982s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'python'
+[0.982s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['python_setup_py']
+[0.982s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'python_setup_py'
+[0.982s] Level 1:colcon.colcon_core.package_identification:_identify(src/custom_interfaces) by extensions ['ignore', 'ignore_ament_install']
+[0.982s] Level 1:colcon.colcon_core.package_identification:_identify(src/custom_interfaces) by extension 'ignore'
+[0.982s] Level 1:colcon.colcon_core.package_identification:_identify(src/custom_interfaces) by extension 'ignore_ament_install'
+[0.982s] Level 1:colcon.colcon_core.package_identification:_identify(src/custom_interfaces) by extensions ['colcon_pkg']
+[0.982s] Level 1:colcon.colcon_core.package_identification:_identify(src/custom_interfaces) by extension 'colcon_pkg'
+[0.982s] Level 1:colcon.colcon_core.package_identification:_identify(src/custom_interfaces) by extensions ['colcon_meta']
+[0.982s] Level 1:colcon.colcon_core.package_identification:_identify(src/custom_interfaces) by extension 'colcon_meta'
+[0.982s] Level 1:colcon.colcon_core.package_identification:_identify(src/custom_interfaces) by extensions ['ros']
+[0.982s] Level 1:colcon.colcon_core.package_identification:_identify(src/custom_interfaces) by extension 'ros'
+[0.984s] DEBUG:colcon.colcon_core.package_identification:Found ROS schema reference in package manifest in 'src/custom_interfaces'
+[0.984s] WARNING:colcon.colcon_core.package_identification:Failed to parse ROS package manifest in 'src/custom_interfaces': Error(s) in package 'src/custom_interfaces/package.xml':
+Error(s):
+- The manifest of package "custom_interfaces" (with format version 3) must not contain the following tags: memeber_of_group
+[0.984s] Level 1:colcon.colcon_core.package_identification:_identify(src/custom_interfaces) by extensions ['cmake', 'python']
+[0.984s] Level 1:colcon.colcon_core.package_identification:_identify(src/custom_interfaces) by extension 'cmake'
+[0.985s] Level 1:colcon.colcon_core.package_identification:_identify(src/custom_interfaces) by extension 'python'
+[0.985s] DEBUG:colcon.colcon_core.package_identification:Package 'src/custom_interfaces' with type 'cmake' and name 'custom_interfaces'
+[0.985s] Level 1:colcon.colcon_core.package_identification:_identify(src/my_robot_controller) by extensions ['ignore', 'ignore_ament_install']
+[0.985s] Level 1:colcon.colcon_core.package_identification:_identify(src/my_robot_controller) by extension 'ignore'
+[0.985s] Level 1:colcon.colcon_core.package_identification:_identify(src/my_robot_controller) by extension 'ignore_ament_install'
+[0.985s] Level 1:colcon.colcon_core.package_identification:_identify(src/my_robot_controller) by extensions ['colcon_pkg']
+[0.985s] Level 1:colcon.colcon_core.package_identification:_identify(src/my_robot_controller) by extension 'colcon_pkg'
+[0.985s] Level 1:colcon.colcon_core.package_identification:_identify(src/my_robot_controller) by extensions ['colcon_meta']
+[0.985s] Level 1:colcon.colcon_core.package_identification:_identify(src/my_robot_controller) by extension 'colcon_meta'
+[0.985s] Level 1:colcon.colcon_core.package_identification:_identify(src/my_robot_controller) by extensions ['ros']
+[0.985s] Level 1:colcon.colcon_core.package_identification:_identify(src/my_robot_controller) by extension 'ros'
+[0.986s] DEBUG:colcon.colcon_core.package_identification:Package 'src/my_robot_controller' with type 'ros.ament_python' and name 'my_robot_controller'
+[0.986s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) using defaults
+[0.986s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) discover
+[0.986s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) using defaults
+[0.986s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) discover
+[0.986s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) using defaults
+[1.050s] Level 5:colcon.colcon_core.verb:set package 'custom_interfaces' build argument 'cmake_args' from command line to 'None'
+[1.050s] Level 5:colcon.colcon_core.verb:set package 'custom_interfaces' build argument 'cmake_target' from command line to 'None'
+[1.050s] Level 5:colcon.colcon_core.verb:set package 'custom_interfaces' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[1.050s] Level 5:colcon.colcon_core.verb:set package 'custom_interfaces' build argument 'cmake_clean_cache' from command line to 'False'
+[1.051s] Level 5:colcon.colcon_core.verb:set package 'custom_interfaces' build argument 'cmake_clean_first' from command line to 'False'
+[1.051s] Level 5:colcon.colcon_core.verb:set package 'custom_interfaces' build argument 'cmake_force_configure' from command line to 'False'
+[1.051s] Level 5:colcon.colcon_core.verb:set package 'custom_interfaces' build argument 'ament_cmake_args' from command line to 'None'
+[1.051s] Level 5:colcon.colcon_core.verb:set package 'custom_interfaces' build argument 'catkin_cmake_args' from command line to 'None'
+[1.051s] Level 5:colcon.colcon_core.verb:set package 'custom_interfaces' build argument 'catkin_skip_building_tests' from command line to 'False'
+[1.051s] DEBUG:colcon.colcon_core.verb:Building package 'custom_interfaces' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/build/custom_interfaces', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/custom_interfaces', 'merge_install': False, 'path': '/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/src/custom_interfaces', 'symlink_install': False, 'test_result_base': None}
+[1.062s] Level 5:colcon.colcon_core.verb:set package 'my_robot_controller' build argument 'cmake_args' from command line to 'None'
+[1.062s] Level 5:colcon.colcon_core.verb:set package 'my_robot_controller' build argument 'cmake_target' from command line to 'None'
+[1.062s] Level 5:colcon.colcon_core.verb:set package 'my_robot_controller' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[1.062s] Level 5:colcon.colcon_core.verb:set package 'my_robot_controller' build argument 'cmake_clean_cache' from command line to 'False'
+[1.062s] Level 5:colcon.colcon_core.verb:set package 'my_robot_controller' build argument 'cmake_clean_first' from command line to 'False'
+[1.062s] Level 5:colcon.colcon_core.verb:set package 'my_robot_controller' build argument 'cmake_force_configure' from command line to 'False'
+[1.062s] Level 5:colcon.colcon_core.verb:set package 'my_robot_controller' build argument 'ament_cmake_args' from command line to 'None'
+[1.062s] Level 5:colcon.colcon_core.verb:set package 'my_robot_controller' build argument 'catkin_cmake_args' from command line to 'None'
+[1.062s] Level 5:colcon.colcon_core.verb:set package 'my_robot_controller' build argument 'catkin_skip_building_tests' from command line to 'False'
+[1.062s] DEBUG:colcon.colcon_core.verb:Building package 'my_robot_controller' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/build/my_robot_controller', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/my_robot_controller', 'merge_install': False, 'path': '/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/src/my_robot_controller', 'symlink_install': False, 'test_result_base': None}
+[1.074s] INFO:colcon.colcon_core.executor:Executing jobs using 'parallel' executor
+[1.097s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete
+[1.098s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/src/custom_interfaces'
+[1.120s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_core.shell.bat': Not used on non-Windows systems
+[1.121s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.121s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[1.228s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/src/my_robot_controller' with build type 'ament_python'
+[1.229s] Level 1:colcon.colcon_core.shell:create_environment_hook('my_robot_controller', 'ament_prefix_path')
+[1.239s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/my_robot_controller/share/my_robot_controller/hook/ament_prefix_path.ps1'
+[1.239s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/my_robot_controller/share/my_robot_controller/hook/ament_prefix_path.dsv'
+[1.240s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/my_robot_controller/share/my_robot_controller/hook/ament_prefix_path.sh'
+[1.250s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.250s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[1.309s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/build/custom_interfaces': /usr/bin/cmake --build /home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/build/custom_interfaces -- -j20 -l20
+[1.632s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/src/my_robot_controller'
+[1.643s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.643s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[1.890s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/build/custom_interfaces' returned '2': /usr/bin/cmake --build /home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/build/custom_interfaces -- -j20 -l20
+[2.155s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:closing loop
+[2.156s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:loop closed
+[2.156s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete finished with '2'
+[2.156s] DEBUG:colcon.colcon_core.event_reactor:joining thread
+[2.172s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.terminal_notifier': Not used on non-Darwin systems
+[2.172s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.win32': Not used on non-Windows systems
+[2.172s] INFO:colcon.colcon_notification.desktop_notification:Sending desktop notification using 'notify2'
+[2.184s] DEBUG:colcon.colcon_core.event_reactor:joined thread
+[2.205s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/local_setup.ps1'
+[2.206s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/_local_setup_util_ps1.py'
+[2.207s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/setup.ps1'
+[2.228s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/local_setup.sh'
+[2.228s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/_local_setup_util_sh.py'
+[2.229s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/setup.sh'
+[2.244s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/local_setup.bash'
+[2.245s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/setup.bash'
+[2.256s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/local_setup.zsh'
+[2.257s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/setup.zsh'

@@ -24,3 +24,20 @@ path is found at
 
 
 
+```
+limo-setup
+limo-gazebo-simple-world
+
+#to move robot
+teleop stuff
+
+#to make map
+limo-slam-toolbox-default
+
+#to use map
+limo-navstack-rviz map:=/path/to/map.yaml use_sim_time:=true
+
+# image capture https://github.com/LCAS/CMP9767_LIMO/wiki/Workshop-9-%E2%80%90-Robot-Vision
+maybe do the workshop
+```
+

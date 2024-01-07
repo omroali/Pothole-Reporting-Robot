@@ -1,0 +1,38 @@
+[0.212s] Invoking command in '/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/build/custom_interfaces': /usr/bin/cmake --build /home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/build/custom_interfaces -- -j20 -l20
+[0.230s] -- Found ament_cmake: 1.3.6 (/opt/ros/humble/share/ament_cmake/cmake)
+[0.356s] -- Found geometry_msgs: 4.2.3 (/opt/ros/humble/share/geometry_msgs/cmake)
+[0.412s] -- Found rosidl_generator_c: 3.1.5 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+[0.419s] -- Found rosidl_adapter: 3.1.5 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[0.431s] -- Found rosidl_generator_cpp: 3.1.5 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+[0.454s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.476s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.567s] -- Found rosidl_default_generators: 1.2.0 (/opt/ros/humble/share/rosidl_default_generators/cmake)
+[0.725s] Error parsing '/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/src/custom_interfaces/package.xml':
+[0.771s] Traceback (most recent call last):
+[0.771s]   File "/opt/ros/humble/share/ament_cmake_core/cmake/core/package_xml_2_cmake.py", line 150, in <module>
+[0.771s]     main()
+[0.771s]   File "/opt/ros/humble/share/ament_cmake_core/cmake/core/package_xml_2_cmake.py", line 53, in main
+[0.771s]     raise e
+[0.771s]   File "/opt/ros/humble/share/ament_cmake_core/cmake/core/package_xml_2_cmake.py", line 49, in main
+[0.771s]     package = parse_package_string(
+[0.771s]   File "/usr/lib/python3/dist-packages/catkin_pkg/package.py", line 786, in parse_package_string
+[0.771s]     raise InvalidPackage('Error(s):%s' % (''.join(['\n- %s' % e for e in errors])), filename)
+[0.771s] catkin_pkg.package.InvalidPackage: Error(s) in package '/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/src/custom_interfaces/package.xml':
+[0.771s] Error(s):
+[0.771s] - The manifest of package "custom_interfaces" (with format version 3) must not contain the following tags: memeber_of_group
+[0.786s] [31mCMake Error at /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_package_xml.cmake:95 (message):
+[0.786s]   execute_process(/usr/bin/python3.10
+[0.786s]   /opt/ros/humble/share/ament_cmake_core/cmake/core/package_xml_2_cmake.py
+[0.786s]   /home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/src/custom_interfaces/package.xml
+[0.786s]   /home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/build/custom_interfaces/ament_cmake_core/package.cmake)
+[0.786s]   returned error code 1
+[0.786s] Call Stack (most recent call first):
+[0.786s]   /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_package_xml.cmake:49 (_ament_package_xml)
+[0.786s]   /opt/ros/humble/share/rosidl_cmake/cmake/rosidl_generate_interfaces.cmake:226 (ament_package_xml)
+[0.786s]   CMakeLists.txt:13 (rosidl_generate_interfaces)
+[0.786s] 
+[0.787s] [0m
+[0.787s] -- Configuring incomplete, errors occurred!
+[0.787s] See also "/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/build/custom_interfaces/CMakeFiles/CMakeOutput.log".
+[0.791s] gmake: *** [Makefile:226: cmake_check_build_system] Error 1
+[0.792s] Invoked command in '/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/build/custom_interfaces' returned '2': /usr/bin/cmake --build /home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/build/custom_interfaces -- -j20 -l20

@@ -1,0 +1,26 @@
+[0.838s] Invoking command in '/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/src/my_robot_controller': PYTHONPATH=/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/build/my_robot_controller/prefix_override:/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/my_robot_controller/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../build/my_robot_controller build --build-base /home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/build/my_robot_controller/build install --record /home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/build/my_robot_controller/install.log --single-version-externally-managed
+[1.037s] running egg_info
+[1.038s] writing ../../build/my_robot_controller/my_robot_controller.egg-info/PKG-INFO
+[1.038s] writing dependency_links to ../../build/my_robot_controller/my_robot_controller.egg-info/dependency_links.txt
+[1.038s] writing entry points to ../../build/my_robot_controller/my_robot_controller.egg-info/entry_points.txt
+[1.038s] writing requirements to ../../build/my_robot_controller/my_robot_controller.egg-info/requires.txt
+[1.038s] writing top-level names to ../../build/my_robot_controller/my_robot_controller.egg-info/top_level.txt
+[1.040s] reading manifest file '../../build/my_robot_controller/my_robot_controller.egg-info/SOURCES.txt'
+[1.041s] writing manifest file '../../build/my_robot_controller/my_robot_controller.egg-info/SOURCES.txt'
+[1.041s] running build
+[1.042s] running build_py
+[1.042s] copying my_robot_controller/simple_pothole_detector.py -> /home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/build/my_robot_controller/build/lib/my_robot_controller
+[1.042s] running install
+[1.042s] running install_lib
+[1.043s] copying /home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/build/my_robot_controller/build/lib/my_robot_controller/simple_pothole_detector.py -> /home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/my_robot_controller/lib/python3.10/site-packages/my_robot_controller
+[1.043s] byte-compiling /home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/my_robot_controller/lib/python3.10/site-packages/my_robot_controller/simple_pothole_detector.py to simple_pothole_detector.cpython-310.pyc
+[1.044s] running install_data
+[1.045s] copying package.xml -> /home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/my_robot_controller/share/my_robot_controller
+[1.045s] running install_egg_info
+[1.046s] removing '/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/my_robot_controller/lib/python3.10/site-packages/my_robot_controller-0.0.1-py3.10.egg-info' (and everything under it)
+[1.046s] Copying ../../build/my_robot_controller/my_robot_controller.egg-info to /home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/my_robot_controller/lib/python3.10/site-packages/my_robot_controller-0.0.1-py3.10.egg-info
+[1.047s] running install_scripts
+[1.062s] Installing simple_pothole_detector script to /home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/my_robot_controller/lib/my_robot_controller
+[1.062s] Installing test_node script to /home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/my_robot_controller/lib/my_robot_controller
+[1.062s] writing list of installed files to '/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/build/my_robot_controller/install.log'
+[1.080s] Invoked command in '/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/src/my_robot_controller' returned '0': PYTHONPATH=/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/build/my_robot_controller/prefix_override:/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/my_robot_controller/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../build/my_robot_controller build --build-base /home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/build/my_robot_controller/build install --record /home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/build/my_robot_controller/install.log --single-version-externally-managed

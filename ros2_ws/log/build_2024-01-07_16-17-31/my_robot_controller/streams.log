@@ -1,0 +1,25 @@
+[0.999s] Invoking command in '/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/src/my_robot_controller': PYTHONPATH=/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/build/my_robot_controller/prefix_override:/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/my_robot_controller/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../build/my_robot_controller build --build-base /home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/build/my_robot_controller/build install --record /home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/build/my_robot_controller/install.log --single-version-externally-managed
+[1.328s] running egg_info
+[1.328s] writing ../../build/my_robot_controller/my_robot_controller.egg-info/PKG-INFO
+[1.329s] writing dependency_links to ../../build/my_robot_controller/my_robot_controller.egg-info/dependency_links.txt
+[1.329s] writing entry points to ../../build/my_robot_controller/my_robot_controller.egg-info/entry_points.txt
+[1.329s] writing requirements to ../../build/my_robot_controller/my_robot_controller.egg-info/requires.txt
+[1.329s] writing top-level names to ../../build/my_robot_controller/my_robot_controller.egg-info/top_level.txt
+[1.331s] reading manifest file '../../build/my_robot_controller/my_robot_controller.egg-info/SOURCES.txt'
+[1.332s] writing manifest file '../../build/my_robot_controller/my_robot_controller.egg-info/SOURCES.txt'
+[1.332s] running build
+[1.332s] running build_py
+[1.332s] copying my_robot_controller/simple_pothole_detector.py -> /home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/build/my_robot_controller/build/lib/my_robot_controller
+[1.333s] running install
+[1.333s] running install_lib
+[1.334s] copying /home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/build/my_robot_controller/build/lib/my_robot_controller/simple_pothole_detector.py -> /home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/my_robot_controller/lib/python3.10/site-packages/my_robot_controller
+[1.334s] byte-compiling /home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/my_robot_controller/lib/python3.10/site-packages/my_robot_controller/simple_pothole_detector.py to simple_pothole_detector.cpython-310.pyc
+[1.336s] running install_data
+[1.337s] running install_egg_info
+[1.338s] removing '/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/my_robot_controller/lib/python3.10/site-packages/my_robot_controller-0.0.1-py3.10.egg-info' (and everything under it)
+[1.338s] Copying ../../build/my_robot_controller/my_robot_controller.egg-info to /home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/my_robot_controller/lib/python3.10/site-packages/my_robot_controller-0.0.1-py3.10.egg-info
+[1.339s] running install_scripts
+[1.361s] Installing simple_pothole_detector script to /home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/my_robot_controller/lib/my_robot_controller
+[1.361s] Installing test_node script to /home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/my_robot_controller/lib/my_robot_controller
+[1.361s] writing list of installed files to '/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/build/my_robot_controller/install.log'
+[1.389s] Invoked command in '/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/src/my_robot_controller' returned '0': PYTHONPATH=/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/build/my_robot_controller/prefix_override:/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/my_robot_controller/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../build/my_robot_controller build --build-base /home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/build/my_robot_controller/build install --record /home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/build/my_robot_controller/install.log --single-version-externally-managed

@@ -1,0 +1,42 @@
+[0.133s] Invoking command in '/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/build/custom_interfaces': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/my_robot_controller:/home/krono/dev/RobotProgramming/limo_ros2/install/voice_control:/home/krono/dev/RobotProgramming/CMP9767_LIMO/install/uol_cmp9767_tutorial:/home/krono/dev/RobotProgramming/CMP9767_LIMO/install/assignment_template:/opt/ros/humble /usr/bin/cmake /home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/src/custom_interfaces -DCMAKE_INSTALL_PREFIX=/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/custom_interfaces
+[0.249s] -- The C compiler identification is GNU 11.4.0
+[0.337s] -- The CXX compiler identification is GNU 11.4.0
+[0.348s] -- Detecting C compiler ABI info
+[0.399s] -- Detecting C compiler ABI info - done
+[0.407s] -- Check for working C compiler: /usr/bin/cc - skipped
+[0.408s] -- Detecting C compile features
+[0.408s] -- Detecting C compile features - done
+[0.412s] -- Detecting CXX compiler ABI info
+[0.476s] -- Detecting CXX compiler ABI info - done
+[0.485s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[0.485s] -- Detecting CXX compile features
+[0.485s] -- Detecting CXX compile features - done
+[0.491s] -- Found ament_cmake: 1.3.6 (/opt/ros/humble/share/ament_cmake/cmake)
+[0.834s] -- Found Python3: /usr/bin/python3.10 (found version "3.10.12") found components: Interpreter 
+[0.942s] -- Found ament_lint_auto: 0.12.9 (/opt/ros/humble/share/ament_lint_auto/cmake)
+[1.009s] -- Added test 'lint_cmake' to check CMake code style
+[1.010s] -- Added test 'xmllint' to check XML markup files
+[1.012s] -- Configuring done
+[1.015s] -- Generating done
+[1.016s] -- Build files have been written to: /home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/build/custom_interfaces
+[1.020s] Invoked command in '/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/build/custom_interfaces' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/my_robot_controller:/home/krono/dev/RobotProgramming/limo_ros2/install/voice_control:/home/krono/dev/RobotProgramming/CMP9767_LIMO/install/uol_cmp9767_tutorial:/home/krono/dev/RobotProgramming/CMP9767_LIMO/install/assignment_template:/opt/ros/humble /usr/bin/cmake /home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/src/custom_interfaces -DCMAKE_INSTALL_PREFIX=/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/custom_interfaces
+[1.021s] Invoking command in '/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/build/custom_interfaces': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/my_robot_controller:/home/krono/dev/RobotProgramming/limo_ros2/install/voice_control:/home/krono/dev/RobotProgramming/CMP9767_LIMO/install/uol_cmp9767_tutorial:/home/krono/dev/RobotProgramming/CMP9767_LIMO/install/assignment_template:/opt/ros/humble /usr/bin/cmake --build /home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/build/custom_interfaces -- -j20 -l20
+[1.036s] Invoked command in '/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/build/custom_interfaces' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/my_robot_controller:/home/krono/dev/RobotProgramming/limo_ros2/install/voice_control:/home/krono/dev/RobotProgramming/CMP9767_LIMO/install/uol_cmp9767_tutorial:/home/krono/dev/RobotProgramming/CMP9767_LIMO/install/assignment_template:/opt/ros/humble /usr/bin/cmake --build /home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/build/custom_interfaces -- -j20 -l20
+[1.052s] Invoking command in '/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/build/custom_interfaces': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/my_robot_controller:/home/krono/dev/RobotProgramming/limo_ros2/install/voice_control:/home/krono/dev/RobotProgramming/CMP9767_LIMO/install/uol_cmp9767_tutorial:/home/krono/dev/RobotProgramming/CMP9767_LIMO/install/assignment_template:/opt/ros/humble /usr/bin/cmake --install /home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/build/custom_interfaces
+[1.055s] -- Install configuration: ""
+[1.055s] -- Installing: /home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/custom_interfaces/share/ament_index/resource_index/package_run_dependencies/custom_interfaces
+[1.055s] -- Installing: /home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/custom_interfaces/share/ament_index/resource_index/parent_prefix_path/custom_interfaces
+[1.056s] -- Installing: /home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/custom_interfaces/share/custom_interfaces/environment/ament_prefix_path.sh
+[1.056s] -- Installing: /home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/custom_interfaces/share/custom_interfaces/environment/ament_prefix_path.dsv
+[1.056s] -- Installing: /home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/custom_interfaces/share/custom_interfaces/environment/path.sh
+[1.056s] -- Installing: /home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/custom_interfaces/share/custom_interfaces/environment/path.dsv
+[1.056s] -- Installing: /home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/custom_interfaces/share/custom_interfaces/local_setup.bash
+[1.056s] -- Installing: /home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/custom_interfaces/share/custom_interfaces/local_setup.sh
+[1.056s] -- Installing: /home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/custom_interfaces/share/custom_interfaces/local_setup.zsh
+[1.056s] -- Installing: /home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/custom_interfaces/share/custom_interfaces/local_setup.dsv
+[1.056s] -- Installing: /home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/custom_interfaces/share/custom_interfaces/package.dsv
+[1.057s] -- Installing: /home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/custom_interfaces/share/ament_index/resource_index/packages/custom_interfaces
+[1.057s] -- Installing: /home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/custom_interfaces/share/custom_interfaces/cmake/custom_interfacesConfig.cmake
+[1.057s] -- Installing: /home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/custom_interfaces/share/custom_interfaces/cmake/custom_interfacesConfig-version.cmake
+[1.057s] -- Installing: /home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/custom_interfaces/share/custom_interfaces/package.xml
+[1.058s] Invoked command in '/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/build/custom_interfaces' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/my_robot_controller:/home/krono/dev/RobotProgramming/limo_ros2/install/voice_control:/home/krono/dev/RobotProgramming/CMP9767_LIMO/install/uol_cmp9767_tutorial:/home/krono/dev/RobotProgramming/CMP9767_LIMO/install/assignment_template:/opt/ros/humble /usr/bin/cmake --install /home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/build/custom_interfaces
