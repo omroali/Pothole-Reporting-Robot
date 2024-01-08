@@ -1,3 +1,3 @@
-string name
-geometry_msgs/Pose pothole_pose
-int64 radius
+geometry_msgs/PoseStamped pothole_pose
+float32 pothole_width
+float32 pothole_height

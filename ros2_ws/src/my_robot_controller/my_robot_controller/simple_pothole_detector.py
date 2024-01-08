@@ -10,15 +10,12 @@ import image_geometry
 import cv2
 import numpy as np
 from cv_bridge import CvBridge, CvBridgeError
-from geometry_msgs.msg import PoseStamped
+from geometry_msgs.msg import Pose, PoseStamped
 
 # from custom
 from custom_interfaces.msg import PotholeData
 from time import sleep
-
 from sensor_msgs.msg import Image, CameraInfo
-
-
 from tf2_geometry_msgs import do_transform_pose
 
 
@@ -47,6 +44,10 @@ class PotholeNode(Node):
         self.nearest_pothole_pub = self.create_publisher(
             PoseStamped, "/limo/nearest_pothole", 10
         )
+        # self.pothole_pose = self.create_publisher(Pose, "/limo/pothole_pose", 10)
+        self.nearest_pothole_pub_custom = self.create_publisher(
+            PotholeData, "/limo/nearest_pothole_custom", 10
+        )
 
         self.image_sub = self.create_subscription(
             Image,
@@ -62,8 +63,8 @@ class PotholeNode(Node):
             qos_profile=qos.qos_profile_sensor_data,
         )
 
-        self.tf_buffer = Buffer()
-        self.tf_listener = TransformListener(self.tf_buffer, self)
+        # self.tf_buffer = Buffer()
+        # self.tf_listener = TransformListener(self.tf_buffer, self)
 
     def camera_info_callback(self, data):
         if not self.camera_model:
@@ -98,7 +99,6 @@ class PotholeNode(Node):
     def find_potholes(self, image, image_depth):
         # Define the color range for detection (example: blue color)
         # target_colour_bgr = np.array([197, 0, 213])
-        self.get_logger().info("debug_1")
         lower_bound = np.array([150, 0, 100])
         upper_bound = np.array([210, 255, 235])
 
@@ -112,23 +112,22 @@ class PotholeNode(Node):
         edges_result = canny_edge_detector(img, 10, 100)
         # dialting the image
         edges_result = cv2.dilate(edges_result, np.ones((2, 2), np.uint8), iterations=2)
+        edges_result = cv2.erode(edges_result, np.ones((1, 1), np.uint8), iterations=1)
         thresh = cv2.threshold(edges_result, 128, 255, cv2.THRESH_BINARY)[1]
 
-        # get the (largest) contours
+        # get the contours
         contours, hierarchy = cv2.findContours(
             thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE
         )
 
-        self.get_logger().info("debug_3")
         for idx, c in enumerate(contours):
             # compute the center of the contour
-            # if w < 100 or h < 100:
-            # continue
             M = cv2.moments(c)
             cX = int(M["m10"] / M["m00"])
             cY = int(M["m01"] / M["m00"])
-            image_coords = (cX, cY)
+            # image_coords = (cX, cY)
 
+            image_coords = (M["m01"] / M["m00"], M["m10"] / M["m00"])
             # getting the depth data
             # "map" from color to depth image
             depth_coords = (
@@ -138,27 +137,42 @@ class PotholeNode(Node):
                 + (image_coords[1] - image.shape[1] / 2) * self.color2depth_aspect,
             )
             # get the depth reading at the centroid location
-            depth_value = image_depth[int(depth_coords[0]), int(depth_coords[1])]
+            try:
+                depth_value = image_depth[int(depth_coords[0]), int(depth_coords[1])]
+            except Exception as e:
+                self.get_logger().warning(f"Failed to evaluate depth_value: {str(e)}")
+                continue
 
             # draw the contour and center of the shape on the image
-            cv2.circle(image, (cX, cY), 7, (255, 255, 255), -1)
-            # cv2.rectangle(image, (x, y), (w + x, y + h), (0, 255, 0), 2)
+            cv2.circle(image, (cX, cY), 7, (255, 255, 0), 2)
             cv2.putText(
                 image,
-                f"{idx}: {round(depth_value,2)}",
+                f"{idx}: {round(depth_value,1)}",
                 (cX - 20, cY - 20),
                 cv2.FONT_HERSHEY_SIMPLEX,
                 0.5,
-                (255, 255, 255),
+                (254, 255, 255),
                 2,
             )
-
             if idx == 0:
-                print("depth value: ", depth_value)
-                camera_coords = self.project_relative_robot_coords(image_coords, depth_value)
+                camera_coords = self.project_relative_robot_coords(
+                    image_coords, depth_value
+                )
                 x, y, w, h = cv2.boundingRect(c)
-                # bounding_coords[width] = project_relative_robot_coords()
-                print("camera coords: ", camera_coords)
+                # APRROXIMATING WITH THE SAME DEPTH VALUE
+                # top_left = self.project_relative_robot_coords((x, y), depth_value)
+                # bottom_right = self.project_relative_robot_coords(
+                #     (x + w, y + h), depth_value
+                # )
+                # pothole_width = bottom_right[1] - top_left[1]
+                # pothole_height = bottom_right[0] - top_left[0]
+
+                # print(f"x: {x}, y: {y}, w:{w}, h:{h}")
+                # print("camera_coords", camera_coords)
+                # print("top_left", top_left)
+                # print("bottom_right", bottom_right)
+                # print("width:", bottom_right[1] - top_left[1])
+                # print("height", bottom_right[0] - top_left[0])
 
                 # define a point in camera coordinates
                 nearest_pothole = PoseStamped()
@@ -168,31 +182,32 @@ class PotholeNode(Node):
                 nearest_pothole.pose.position.y = camera_coords[1]
                 nearest_pothole.pose.position.z = camera_coords[2]
 
-                # nearest_pothole_custom = ()
+                nearest_pothole_custom = PotholeData()
+                nearest_pothole_custom.pothole_pose.pose.orientation.w = 1.0
+                nearest_pothole_custom.pothole_pose.pose.position.x = camera_coords[0]
+                nearest_pothole_custom.pothole_pose.pose.position.y = camera_coords[1]
+                nearest_pothole_custom.pothole_pose.pose.position.z = camera_coords[2]
+                nearest_pothole_custom.pothole_width = 0.2  # pothole_width
+                nearest_pothole_custom.pothole_height = 0.2  # pothole_height
 
-                # publish so we can see that in rviz
+                # publish so we can see that in rviziterate od
                 self.nearest_pothole_pub.publish(nearest_pothole)
+                self.nearest_pothole_pub_custom.publish(nearest_pothole_custom)
 
-                # print out the coordinates in the odom frame
-                transform = self.get_tf_transform("depth_link", "odom")
-                p_camera = do_transform_pose(nearest_pothole.pose, transform)
-
-                print("odom coords: ", p_camera.position)
+                # # print out the coordinates in the odom frame
+                # transform = self.get_tf_transform("odom", "depth_link")
+                # print(transform)
+                # p_camera = do_transform_pose(nearest_pothole.pose, transform)
+                # print("odom coords: ", p_camera.position)
+                # # self.pothole_pose.publish(p_camera)
+                # publish_position = PoseStamped()
+                # publish_position.pose = p_camera
+                # publish_position.header.frame_id = "odom"
+                # self.pothole_position_publisher.publish(publish_position)
 
         cv2.drawContours(image, contours, -1, (0, 255, 0), cv2.FILLED)
-        # cv2.imshow("Color Detection", img)
         cv2.imshow("Contour Detection", image)
-        cv2.waitKey(10)
-
-    def get_tf_transform(self, target_frame, source_frame):
-        try:
-            transform = self.tf_buffer.lookup_transform(
-                target_frame, source_frame, rclpy.time.Time()
-            )
-            return transform
-        except Exception as e:
-            self.get_logger().warning(f"Failed to lookup transform: {str(e)}")
-            return None
+        cv2.waitKey(1)
 
     def project_relative_robot_coords(self, coords, depth_value):
         # calculate object's 3d location in camera coords
@@ -206,6 +221,16 @@ class PotholeNode(Node):
             x * depth_value for x in camera_coords
         ]  # multiply the vector by depth
         return camera_coords
+
+    # def get_tf_transform(self, target_frame, source_frame):
+    #     try:
+    #         transform = self.tf_buffer.lookup_transform(
+    #             target_frame, source_frame, rclpy.time.Time()
+    #         )
+    #         return transform
+    #     except Exception as e:
+    #         self.get_logger().warning(f"Failed to lookup transform: {str(e)}")
+    #         return e
 
 
 def color_detector(image, lower_bound, upper_bound):
