@@ -34,7 +34,6 @@ class PotholeNode(Node):
         self.get_logger().info("hello from pothole hello")
         self.get_logger().info("starting in timer callback")
 
-        # 1 get image from the robot
         self.camera_info_sub = self.create_subscription(
             CameraInfo,
             "/limo/depth_camera_link/camera_info",
@@ -44,7 +43,6 @@ class PotholeNode(Node):
         self.nearest_pothole_pub = self.create_publisher(
             PoseStamped, "/limo/nearest_pothole", 10
         )
-        # self.pothole_pose = self.create_publisher(Pose, "/limo/pothole_pose", 10)
         self.nearest_pothole_pub_custom = self.create_publisher(
             PotholeData, "/limo/nearest_pothole_custom", 10
         )
@@ -85,8 +83,7 @@ class PotholeNode(Node):
             image_colour = self.bridge.imgmsg_to_cv2(data, "bgr8")
             image_depth = self.bridge.imgmsg_to_cv2(self.image_depth_ros, "32FC1")
         except CvBridgeError as e:
-            print(e)
-            return
+            raise ValueError(e)
 
         if image_colour is not None:
             self.find_potholes(image_colour, image_depth)
@@ -95,7 +92,6 @@ class PotholeNode(Node):
 
     def get_depth(self, image_coords, image_depth, image):
         y, x = image_coords
-        shape_img = image.shape
         shape_depth = image_depth.shape
         depth_coords = (
             shape_depth[0] / 2 + (y - image.shape[0] / 2) * self.color2depth_aspect,
@@ -157,7 +153,7 @@ class PotholeNode(Node):
                 (254, 255, 255),
                 2,
             )
-            if idx == 0:
+            if depth_value < 1.0:
                 camera_coords = self.project_relative_robot_coords(
                     image_coords, depth_value
                 )
@@ -165,45 +161,34 @@ class PotholeNode(Node):
                 w -= 1
                 h -= 1
                 image_coords = (M["m01"] / M["m00"], M["m10"] / M["m00"])
-                print(image.shape)
-                print(x, "x")
-                print(y, "y")
-                print(w, "w")
-                print(h, "h")
 
-                top_left_coords = (x, y)
-                bottom_right_coords = (x + w, y + h)
-                print("top_left_coords", top_left_coords)
-                print("bottom_right_coords", bottom_right_coords)
-                # APRROXIMATING WITH THE SAME DEPTH VALUE
-                try:
-                    top_left_depth = self.get_depth((y, x), image_depth, image)
-                    bottom_left_depth = self.get_depth(
-                        (y + h, x + w), image_depth, image
-                    )
-                except Exception as e:
-                    self.get_logger().warning(
-                        f"Failed to evaluate depth_value: {str(e)}"
-                    )
-                    continue
-                top_left = self.project_relative_robot_coords(
-                    top_left_coords, top_left_depth
-                )
-                bottom_right = self.project_relative_robot_coords(
-                    bottom_right_coords, bottom_left_depth
-                )
-                pothole_width = bottom_right[1] - top_left[1]
-                pothole_height = bottom_right[0] - top_left[0]
-
-                print("width", pothole_width)
-                print("height", pothole_height)
-
-                # print(f"x: {x}, y: {y}, w:{w}, h:{h}")
-                # print("camera_coords", camera_coords)
-                # print("top_left", top_left)
+                # # attempting to get the depth coords of the bounding box
+                # top_left_coords = (x, y)
+                # bottom_right_coords = (x + w, y + h)
+                # try:
+                #     top_left_depth = self.get_depth((y, x), image_depth, image)
+                #     bottom_left_depth = self.get_depth(
+                #         (y + h, x + w), image_depth, image
+                #     )
+                # except Exception as e:
+                #     self.get_logger().warning(
+                #         f"Failed to evaluate depth_value: {str(e)}"
+                #     )
+                #     continue
+                # top_left = self.project_relative_robot_coords(
+                #     top_left_coords, top_left_depth
+                # )
+                # bottom_right = self.project_relative_robot_coords(
+                #     bottom_right_coords, bottom_left_depth
+                # )
+                # pothole_width = bottom_right[1] - top_left[1]
+                # pothole_height = bottom_right[0] - top_left[0]
                 # print("bottom_right", bottom_right)
-                # print("width:", bottom_right[1] - top_left[1])
-                # print("height", bottom_right[0] - top_left[0])
+                # print("top_left", top_left)
+                # print("width", pothole_width)
+                # print("height", pothole_height)
+                pothole_width = 0.2
+                pothole_height = 0.2
 
                 # define a point in camera coordinates
                 nearest_pothole = PoseStamped()
@@ -232,13 +217,6 @@ class PotholeNode(Node):
     def project_relative_robot_coords(self, coords, depth_value):
         # calculate object's 3d location in camera coords
         print("camera_coords:", coords)
-        # y, x = coords
-        #
-        # if coords[1] >= 480:
-        #     coords[1] = 479
-        # if coords[0] >= 0:
-        #     coords[0] = 479
-
         camera_coords = self.camera_model.projectPixelTo3dRay((coords[1], coords[0]))
         camera_coords = [x / camera_coords[2] for x in camera_coords]
         camera_coords = [x * depth_value for x in camera_coords]

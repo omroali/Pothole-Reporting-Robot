@@ -4,6 +4,7 @@ from rclpy import qos
 
 from rclpy.node import Node
 from geometry_msgs.msg import Pose
+from visualization_msgs.msg import Marker, MarkerArray
 from custom_interfaces.msg import PotholeData
 
 from tf2_ros import Buffer, PoseStamped, TransformListener
@@ -27,6 +28,7 @@ class ReporterNode(Node):
         super().__init__("pothole_reporter")
         self.get_logger().info("Processing Pothole Data")  # logging in ros2
         self.pothole_storage = []
+        self.markers = MarkerArray()
 
         self.pothole_data_subscriber = self.create_subscription(
             PotholeData,
@@ -39,24 +41,33 @@ class ReporterNode(Node):
             PoseStamped, "limo/pothole_pose", 10
         )
 
+        self.pothole_marker = self.create_publisher(
+            MarkerArray, "/visualization_marker", 10
+        )
+
         self.tf_buffer = Buffer()
         self.tf_listener = TransformListener(self.tf_buffer, self)
 
     def process_pothole_potion_callback(self, data):
         radius = data.pothole_width / 2
+        confidence = 0.8
         pothole_pose = data.pothole_pose.pose
         try:
             pothole_world_tf = self.get_tf_transform("odom", "depth_link")
         except Exception as e:
             self.get_logger.warning(f"Failed to get TF: {e}")
-            return
+            return e
         pothole_world_pose = do_transform_pose(pothole_pose, pothole_world_tf)
         publish_position = PoseStamped()
         publish_position.pose = pothole_world_pose
         publish_position.header.frame_id = "odom"
         self.pothole_position_publisher.publish(publish_position)
 
-        self.pothole_storage_evaluation(pothole_world_pose, radius)
+        should_store_pothole = self.pothole_storage_evaluation(
+            pothole_world_pose, radius
+        )
+        if should_store_pothole:
+            self.store_pothole(publish_position, radius, confidence)
         # maybe i need to allow the robot to navigate and orient first
 
         # track into another publisher?
@@ -64,7 +75,7 @@ class ReporterNode(Node):
         # getting robot position relative to the map
         # self.get_tf_transform('odom', )
 
-    def pothole_storage_evaluation(self, pothole_pose, radius):
+    def pothole_storage_evaluation(self, pothole_pose, radius) -> bool:
         # if pothole_has_been_seen:
         #     if the center_point is within the radius of another pothole
         #         check the confidence
@@ -79,11 +90,10 @@ class ReporterNode(Node):
         confidence = self.evaluate_pothole_position_confidence(pothole_pose)
 
         if radius >= 0.5:
-            return
+            return False
 
         if len(self.pothole_storage) == 0:
-            self.store_pothole(x, y, z, radius, confidence)
-            return
+            return True
 
         for pothole in self.pothole_storage:
             # print("pothole:", pothole)
@@ -96,21 +106,43 @@ class ReporterNode(Node):
                     pothole["y"] + bound_radius
                 ):
                     # print("don't store")
-                    return
-        self.store_pothole(x, y, z, radius, confidence)
+                    return False
+        return True
 
-    def store_pothole(self, x, y, z, radius, confidence):
+    def store_pothole(self, publish_position, radius, confidence):
+        pose = publish_position.pose
+
         self.pothole_storage.append(
             {
                 # "timestamp": datetime.now(),
-                "x": x,
-                "y": y,
-                "z": z,
+                "x": pose.position.x,
+                "y": pose.position.y,
+                "z": pose.position.z,
                 "radius": radius,
                 "confidence": confidence,
             }
         )
+
+        marker = Marker()
+        marker.id = len(self.markers.markers)
+        marker.header.frame_id = "/odom"
+        marker.color.a = 1.0
+        marker.color.r = 0.0
+        marker.color.g = 1.0
+        marker.color.b = 0.0
+        marker.scale.x = 0.05
+        marker.scale.y = 0.05
+        marker.scale.z = 0.05
+        marker.pose = pose
+        marker.type = 2
+        marker.ns = "marked"
+        marker.lifetime = rclpy.duration.Duration().to_msg()
+        self.markers.markers.append(marker)
+
+        self.pothole_marker.publish(self.markers)
         print(self.pothole_storage)
+        print("")
+        print("Total:", len(self.pothole_storage))
 
     def evaluate_pothole_position_confidence(self, pothole_pose):
         return 0.8
@@ -123,7 +155,7 @@ class ReporterNode(Node):
             return transform
         except Exception as e:
             self.get_logger().warning(f"Failed to lookup transform: {str(e)}")
-            return e
+            raise ValueError(e)
 
 
 def main(args=None):
