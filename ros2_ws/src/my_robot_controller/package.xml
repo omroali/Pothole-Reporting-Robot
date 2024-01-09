@@ -8,6 +8,7 @@
   <license>TODO: License declaration</license>
 
   <depend>rclpy</depend>
+  <depend>cv_bridge</depend>
   <depend>custom_interfaces</depend>
 
 

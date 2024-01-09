@@ -23,6 +23,7 @@ setup(
             "test_node = my_robot_controller.first_node:main",
             "simple_pothole_detector = my_robot_controller.simple_pothole_detector:main",
             "pothole_reporter = my_robot_controller.pothole_reporter_node:main",
+            "follow_waypoint = my_robot_controller.follow_waypoint:main"
         ],
     },
 )

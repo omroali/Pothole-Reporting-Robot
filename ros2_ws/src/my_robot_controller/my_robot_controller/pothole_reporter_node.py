@@ -43,16 +43,8 @@ class ReporterNode(Node):
         self.tf_listener = TransformListener(self.tf_buffer, self)
 
     def process_pothole_potion_callback(self, data):
-        # extract pothole data
-
-        # pothole_pose, radius = data
-        # x, y, z = pothole_pose.pose
-
-        # print(data)
         radius = data.pothole_width / 2
-
         pothole_pose = data.pothole_pose.pose
-
         try:
             pothole_world_tf = self.get_tf_transform("odom", "depth_link")
         except Exception as e:
@@ -63,9 +55,6 @@ class ReporterNode(Node):
         publish_position.pose = pothole_world_pose
         publish_position.header.frame_id = "odom"
         self.pothole_position_publisher.publish(publish_position)
-        # print("pothole_data", pothole_world_pose)
-        #
-        # print("odom coords: ", pothole_world_pose.position)
 
         self.pothole_storage_evaluation(pothole_world_pose, radius)
         # maybe i need to allow the robot to navigate and orient first
@@ -89,17 +78,26 @@ class ReporterNode(Node):
 
         confidence = self.evaluate_pothole_position_confidence(pothole_pose)
 
+        if radius >= 0.5:
+            return
+
         if len(self.pothole_storage) == 0:
             self.store_pothole(x, y, z, radius, confidence)
+            return
 
         for pothole in self.pothole_storage:
-            print("pothole:", pothole)
-            print("radius:", radius)
-            if x > (pothole["x"] - radius) and x < (pothole["x"] - radius):
-                print("here1")
-                if z > (pothole["x"] + radius) and x < (pothole["x"] - radius):
-                    print("here2")
-                    self.store_pothole(x, y, z, radius, confidence)
+            # print("pothole:", pothole)
+            # print("radius:", radius)
+            bound_radius = radius
+
+            # if the pothole is within a specified radius, remove it
+            if x > (pothole["x"] - bound_radius) and x < (pothole["x"] + bound_radius):
+                if y > (pothole["y"] - bound_radius) and y < (
+                    pothole["y"] + bound_radius
+                ):
+                    # print("don't store")
+                    return
+        self.store_pothole(x, y, z, radius, confidence)
 
     def store_pothole(self, x, y, z, radius, confidence):
         self.pothole_storage.append(
