@@ -68,24 +68,10 @@ class ReporterNode(Node):
         )
         if should_store_pothole:
             self.store_pothole(publish_position, radius, confidence)
-        # maybe i need to allow the robot to navigate and orient first
-
-        # track into another publisher?
-
-        # getting robot position relative to the map
-        # self.get_tf_transform('odom', )
 
     def pothole_storage_evaluation(self, pothole_pose, radius) -> bool:
-        # if pothole_has_been_seen:
-        #     if the center_point is within the radius of another pothole
-        #         check the confidence
-        #         if the confidence of the position is higher
-        #             replace the other pothole
-        # if it has not been seen:
-        #     add the pothole to reporter
         x = pothole_pose.position.x
         y = pothole_pose.position.y
-        z = pothole_pose.position.z
 
         confidence = self.evaluate_pothole_position_confidence(pothole_pose)
 
@@ -105,7 +91,6 @@ class ReporterNode(Node):
                 if y > (pothole["y"] - bound_radius) and y < (
                     pothole["y"] + bound_radius
                 ):
-                    # print("don't store")
                     return False
         return True
 

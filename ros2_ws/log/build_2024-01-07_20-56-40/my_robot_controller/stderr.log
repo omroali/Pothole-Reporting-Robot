@@ -1,5 +1,0 @@
-  File "/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/ros2_ws/install/my_robot_controller/lib/python3.10/site-packages/my_robot_controller/simple_pothole_detector.py", line 14
-    from custom
-               ^
-SyntaxError: invalid syntax
-
