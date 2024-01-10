@@ -17,13 +17,16 @@ from tf2_geometry_msgs import do_transform_pose
 
 
 class PotholeNode(Node):
-    image_colour = None
-    color2depth_aspect = 1.0  # for a simulated camera
+    COLOR_TO_DEPTH_ASPECT = 1.0
+    MIN_DEPTH = 0.15
+    MAX_DEPTH = 0.7
+    X_PROCCESABLE = 10
+    Y_PROCESSABLE = 20
+    POTHOLE_BRG_LOWER = np.array([150, 0, 100])
+    POTHOLE_BRG_UPPER = np.array([210, 255, 235])
 
     def __init__(self):
-        # setting up the node name
-        node_name = "simple_pothole_node"
-        super().__init__(node_name)
+        super().__init__("simple_pothole_node")
         self.bridge = CvBridge()
         self.camera_model = None
         self.image_depth_ros = None
@@ -64,34 +67,24 @@ class PotholeNode(Node):
         self.image_depth_ros = data
 
     def image_color_callback(self, data):
-        image_colour = None
         # wait for camera_model and depth image to arrive
-        if self.camera_model is None:
+        if self.camera_model is None or self.image_depth_ros is None:
             return
-
-        if self.image_depth_ros is None:
-            return
-
-        # covert images to open_cv
         try:
+            # covert images to open_cv
             image_colour = self.bridge.imgmsg_to_cv2(data, "bgr8")
             image_depth = self.bridge.imgmsg_to_cv2(self.image_depth_ros, "32FC1")
         except CvBridgeError as e:
             raise ValueError(e)
-
-        if image_colour is not None:
-            self.find_potholes(image_colour, image_depth)
-        else:
-            self.get_logger().info("No new image to capture")
+        self.find_potholes(image_colour, image_depth)
 
     def get_depth(self, image_coords, image_depth, image):
         y, x = image_coords
         shape_depth = image_depth.shape
         depth_coords = (
-            shape_depth[0] / 2 + (y - image.shape[0] / 2) * self.color2depth_aspect,
-            shape_depth[1] / 2 + (x - image.shape[1] / 2) * self.color2depth_aspect,
+            shape_depth[0] / 2 + (y - image.shape[0] / 2) * self.COLOR_TO_DEPTH_ASPECT,
+            shape_depth[1] / 2 + (x - image.shape[1] / 2) * self.COLOR_TO_DEPTH_ASPECT,
         )
-        # get the depth reading at the centroid location
         try:
             depth_value = image_depth[int(depth_coords[0]), int(depth_coords[1])]
         except Exception as e:
@@ -100,41 +93,82 @@ class PotholeNode(Node):
         return depth_value
 
     def find_potholes(self, image, image_depth):
-        # Define the color range for detection (example: blue color)
-        # target_colour_bgr = np.array([197, 0, 213])
-        lower_bound = np.array([150, 0, 100])
-        upper_bound = np.array([210, 255, 235])
-
-        # Perform color detection
-        img = color_detector(image, lower_bound, upper_bound)
-        img = cv2.GaussianBlur(
-            img, (0, 0), sigmaX=3, sigmaY=3, borderType=cv2.BORDER_DEFAULT
-        )
-
-        # Perform Canny edge detection
-        edges_result = canny_edge_detector(img, 10, 100)
-        # dialting the image
-        edges_result = cv2.dilate(edges_result, np.ones((2, 2), np.uint8), iterations=2)
-        edges_result = cv2.erode(edges_result, np.ones((1, 1), np.uint8), iterations=1)
-        thresh = cv2.threshold(edges_result, 128, 255, cv2.THRESH_BINARY)[1]
-
-        # get the contours
-        contours, hierarchy = cv2.findContours(
-            thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE
-        )
+        # Perform color detection and grabbing contours
+        img = color_detector(image, self.POTHOLE_BRG_LOWER, self.POTHOLE_BRG_UPPER)
+        thresh = filter_image(img)
+        contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+        accepted_contours = []
 
         for idx, c in enumerate(contours):
             # compute the center of the contour
             M = cv2.moments(c)
             cX = int(M["m10"] / M["m00"])
             cY = int(M["m01"] / M["m00"])
+            image_coords = (cY, cX)
 
-            image_coords = (M["m01"] / M["m00"], M["m10"] / M["m00"])
+            # getting pothole depth
             try:
                 depth_value = self.get_depth(image_coords, image_depth, image)
             except Exception as e:
                 self.get_logger().warning(f"Failed to evaluate depth_value: {str(e)}")
                 continue
+
+            # making sure that potholes too close to image edges are ignored
+            in_processable_window = (
+                image_coords[1] > self.X_PROCCESABLE
+                and image_coords[1] < (image.shape[1] - self.X_PROCCESABLE)
+                and image_coords[0] > self.Y_PROCESSABLE
+                and image_coords[0] < (image.shape[0] - self.Y_PROCESSABLE)
+            )
+
+            # making sure depth is within a band of acceptable values
+            acceptable_depth = (
+                depth_value > self.MIN_DEPTH and depth_value < self.MAX_DEPTH
+            )
+
+            if not (acceptable_depth and in_processable_window):
+                # don't bother processing further go to next loop
+                continue
+            accepted_contours.append(c)
+
+            camera_coords = self.project_relative_robot_coords(
+                image_coords, depth_value
+            )
+            x, y, w, h = cv2.boundingRect(c)
+            # to prevent hitting index 480 in img size 480
+            w -= 1
+            h -= 1
+
+            # depth coords of the bounding box corners
+            top_left_coords = (x, y)
+            bottom_right_coords = (x + w, y + h)
+            try:
+                top_left_depth = self.get_depth((y, x), image_depth, image)
+                bottom_left_depth = self.get_depth((y + h, x + w), image_depth, image)
+            except Exception as e:
+                self.get_logger().warning(f"Failed to evaluate depth_value: {str(e)}")
+                continue
+            top_left = self.project_relative_robot_coords(
+                top_left_coords, top_left_depth
+            )
+            bottom_right = self.project_relative_robot_coords(
+                bottom_right_coords, bottom_left_depth
+            )
+            pothole_width = abs(bottom_right[1] - top_left[1])
+            pothole_height = abs(bottom_right[0] - top_left[0])
+            pothole_width = pothole_width
+            pothole_height = 0.0  # TODO: depth of the heigh of bb
+
+            nearest_pothole = PotholeData()
+
+            nearest_pothole.pothole_pose.pose.orientation.w = 1.0
+            nearest_pothole.pothole_pose.pose.position.x = camera_coords[0]
+            nearest_pothole.pothole_pose.pose.position.y = camera_coords[1]
+            nearest_pothole.pothole_pose.pose.position.z = camera_coords[2]
+            nearest_pothole.pothole_width = pothole_width
+            nearest_pothole.pothole_height = pothole_height
+
+            self.nearest_pothole_pub_custom.publish(nearest_pothole)
 
             # draw the contour and center of the shape on the image
             cv2.circle(image, (cX, cY), 7, (255, 255, 0), 2)
@@ -144,85 +178,16 @@ class PotholeNode(Node):
                 (cX - 20, cY - 20),
                 cv2.FONT_HERSHEY_SIMPLEX,
                 0.5,
-                (254, 255, 255),
+                (0, 0, 0),
                 2,
             )
-            # print(image_coords)
-            processable_window = (
-                image_coords[1] > 30
-                and image_coords[1] < 570
-                and image_coords[0] > 20
-                and image_coords[0] < 460
-            )
 
-            if depth_value < 0.81 and processable_window:
-                camera_coords = self.project_relative_robot_coords(
-                    image_coords, depth_value
-                )
-                image_coords = (M["m01"] / M["m00"], M["m10"] / M["m00"])
-                x, y, w, h = cv2.boundingRect(c)
-                print("image_coords:", image_coords)
-                print("x:", x)
-                print("y:", y)
-                print("w:", w)
-                print("h:", h)
-                # w -= 1
-                # h -= 1
-
-                # # attempting to get the depth coords of the bounding box
-                # top_left_coords = (x, y)
-                # bottom_right_coords = (x + w, y + h)
-                # try:
-                #     top_left_depth = self.get_depth((y, x), image_depth, image)
-                #     bottom_left_depth = self.get_depth(
-                #         (y + h, x + w), image_depth, image
-                #     )
-                # except Exception as e:
-                #     self.get_logger().warning(
-                #         f"Failed to evaluate depth_value: {str(e)}"
-                #     )
-                #     continue
-                # top_left = self.project_relative_robot_coords(
-                #     top_left_coords, top_left_depth
-                # )
-                # bottom_right = self.project_relative_robot_coords(
-                #     bottom_right_coords, bottom_left_depth
-                # )
-                # pothole_width = bottom_right[1] - top_left[1]
-                # pothole_height = bottom_right[0] - top_left[0]
-                # print("bottom_right", bottom_right)
-                # print("top_left", top_left)
-                # print("width", pothole_width)
-                # print("height", pothole_height)
-                pothole_width = 0.2
-                pothole_height = 0.2
-
-                # # define a point in camera coordinates
-                # nearest_pothole = PoseStamped()
-                # nearest_pothole.header.frame_id = "depth_link"
-                # nearest_pothole.pose.orientation.w = 1.0
-                # nearest_pothole.pose.position.x = camera_coords[0]
-                # nearest_pothole.pose.position.y = camera_coords[1]
-                # nearest_pothole.pose.position.z = camera_coords[2]
-
-                nearest_pothole_custom = PotholeData()
-                nearest_pothole_custom.pothole_pose.pose.orientation.w = 1.0
-                nearest_pothole_custom.pothole_pose.pose.position.x = camera_coords[0]
-                nearest_pothole_custom.pothole_pose.pose.position.y = camera_coords[1]
-                nearest_pothole_custom.pothole_pose.pose.position.z = camera_coords[2]
-                nearest_pothole_custom.pothole_width = pothole_width
-                nearest_pothole_custom.pothole_height = pothole_height
-
-                # publish so we can see that in rviziterate od
-                self.nearest_pothole_pub_custom.publish(nearest_pothole_custom)
-
-        cv2.drawContours(image, contours, -1, (0, 255, 0), cv2.FILLED)
+        cv2.drawContours(image, accepted_contours, -1, (0, 255, 0), cv2.FILLED)
         cv2.imshow("Contour Detection", image)
         cv2.waitKey(1)
 
     def project_relative_robot_coords(self, coords, depth_value):
         # calculate object's 3d location in camera coords
-        # print("camera_coords:", coords)
         camera_coords = self.camera_model.projectPixelTo3dRay((coords[1], coords[0]))
         camera_coords = [x / camera_coords[2] for x in camera_coords]
         camera_coords = [x * depth_value for x in camera_coords]
@@ -236,6 +201,21 @@ def color_detector(image, lower_bound, upper_bound):
     return result
 
 
+def filter_image(image):
+    image = cv2.GaussianBlur(
+        image, (0, 0), sigmaX=3, sigmaY=3, borderType=cv2.BORDER_DEFAULT
+    )
+
+    # Perform Canny edge detection on blurred image
+    edges_result = canny_edge_detector(image, 10, 100)
+
+    # Morph filters on image to get better sections
+    edges_result = cv2.dilate(edges_result, np.ones((2, 2), np.uint8), iterations=2)
+    edges_result = cv2.erode(edges_result, np.ones((1, 1), np.uint8), iterations=1)
+    thresh = cv2.threshold(edges_result, 128, 255, cv2.THRESH_BINARY)[1]
+    return thresh
+
+
 def canny_edge_detector(image, low_threshold, high_threshold):
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     blurred = cv2.GaussianBlur(gray, (5, 5), 0)
@@ -244,16 +224,9 @@ def canny_edge_detector(image, low_threshold, high_threshold):
 
 
 def main(args=None):
-    # initiallising ros communications
     rclpy.init(args=args)
-
-    # creating the node
     node = PotholeNode()
-
-    # keeping the node alive until it's killed
     rclpy.spin(node)
-
-    # shutting down communications
     rclpy.shutdown()
 
 
