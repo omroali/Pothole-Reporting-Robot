@@ -1,16 +1,12 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3 import rclpy from rclpy import qos
 import rclpy
-from rclpy import qos
-
 from rclpy.node import Node
-from geometry_msgs.msg import Pose
+from rclpy import qos
 from visualization_msgs.msg import Marker, MarkerArray
 from custom_interfaces.msg import PotholeData
 
 from tf2_ros import Buffer, PoseStamped, TransformListener
 from tf2_geometry_msgs import do_transform_pose
-
-from datetime import datetime
 
 
 class PotholeWorldData:
@@ -55,7 +51,7 @@ class ReporterNode(Node):
         try:
             pothole_world_tf = self.get_tf_transform("odom", "depth_link")
         except Exception as e:
-            self.get_logger.warning(f"Failed to get TF: {e}")
+            self.get_logger().warning(f"Failed to get TF: {e}")
             return e
         pothole_world_pose = do_transform_pose(pothole_pose, pothole_world_tf)
         publish_position = PoseStamped()
@@ -82,6 +78,8 @@ class ReporterNode(Node):
             return True
 
         for pothole in self.pothole_storage:
+            # self.pothole_storage = [{x:1.1, y: 1.3}, {x:1.8, y:2.1}]
+
             # print("pothole:", pothole)
             # print("radius:", radius)
             bound_radius = radius
@@ -111,7 +109,8 @@ class ReporterNode(Node):
         marker = Marker()
         marker.id = len(self.markers.markers)
         marker.header.frame_id = "/odom"
-        marker.color.a = 1.0
+        marker.action = Marker.ADD
+        marker.color.a = 1.0s
         marker.color.r = 0.0
         marker.color.g = 1.0
         marker.color.b = 0.0
@@ -121,12 +120,13 @@ class ReporterNode(Node):
         marker.pose = pose
         marker.type = 2
         marker.ns = "marked"
-        marker.lifetime = rclpy.duration.Duration().to_msg()
+        marker.lifetime.sec = 0
         self.markers.markers.append(marker)
 
         self.pothole_marker.publish(self.markers)
-        print(self.pothole_storage)
-        print("")
+        # print(self.pothole_storage)
+        for idx, pothole in enumerate(self.pothole_storage):
+            print(f"{idx} - x: {pothole['x']}, y: {pothole['y']} ")
         print("Total:", len(self.pothole_storage))
 
     def evaluate_pothole_position_confidence(self, pothole_pose):

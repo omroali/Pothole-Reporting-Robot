@@ -23,96 +23,47 @@ Basic navigation demo to go to poses.
 """
 
 
+def new_pose(
+    navigator, pos_x: float, pos_y: float, orient_z: float, orient_w: float
+) -> PoseStamped:
+    pose = PoseStamped()
+    pose.header.frame_id = "map"
+    pose.header.stamp = navigator.get_clock().now().to_msg()
+    pose.pose.position.x = pos_x
+    pose.pose.position.y = pos_y
+    pose.pose.orientation.z = orient_z
+    pose.pose.orientation.w = orient_w
+    return pose
+
+
 def main():
     rclpy.init()
 
     navigator = BasicNavigator()
 
     # Set our demo's initial pose
-    initial_pose = PoseStamped()
-    initial_pose.header.frame_id = "map"
-    initial_pose.header.stamp = navigator.get_clock().now().to_msg()
-    initial_pose.pose.position.x = 0.0
-    initial_pose.pose.position.y = 0.0
-    initial_pose.pose.orientation.z = 0.0
-    initial_pose.pose.orientation.w = 1.0
-    navigator.setInitialPose(initial_pose)
-
-    # Activate navigation, if not autostarted. This should be called after setInitialPose()
-    # or this will initialize at the origin of the map and update the costmap with bogus readings.
-    # If autostart, you should `waitUntilNav2Active()` instead.
-    # navigator.lifecycleStartup()
+    navigator.setInitialPose(new_pose(navigator, 0.0, 0.0, 0.0, 1.0))
 
     # Wait for navigation to fully activate, since autostarting nav2
     navigator.waitUntilNav2Active()
 
-    # If desired, you can change or load the map as well
-    # navigator.changeMap('/path/to/map.yaml')
-
-    # You may use the navigator to clear o obtain costmaps
-    # navigator.clearAllCostmaps()  # also have clearLocalCostmap() and clearGlobalCostmap()
-    # global_costmap = navigator.getGlobalCostmap()
-    # local_costmap = navigator.getLocalCostmap()
-
     # set our demo's goal poses to follow
     goal_poses = []
-    goal_pose1 = PoseStamped()
-    goal_pose1.header.frame_id = "map"
-    goal_pose1.header.stamp = navigator.get_clock().now().to_msg()
-    goal_pose1.pose.position.x = 0.7
-    goal_pose1.pose.position.y = -0.05
-    goal_pose1.pose.orientation.w = 0.9
-    goal_pose1.pose.orientation.z = 0.0
-    goal_poses.append(goal_pose1)
 
-    # additional goals can be appended
-    goal_pose2 = PoseStamped()
-    goal_pose2.header.frame_id = "map"
-    goal_pose2.header.stamp = navigator.get_clock().now().to_msg()
-    goal_pose2.pose.position.x = 1.1
-    goal_pose2.pose.position.y = -0.35
-    goal_pose2.pose.orientation.w = 0.70
-    goal_pose2.pose.orientation.z = -0.68
-    goal_poses.append(goal_pose2)
-
-    # goal_pose3 = self.createGoalPose()
-
-    # goal_pose3 = PoseStamped()
-    # goal_pose3.header.frame_id = "map"
-    # goal_pose3.header.stamp = navigator.get_clock().now().to_msg()
-    # goal_pose3.pose.position.x = -0.17
-    # goal_pose3.pose.position.y = -1.0
-    # goal_pose3.pose.orientation.w = 1.0
-    # goal_pose3.pose.orientation.z = 0.04
-    # goal_poses.append(goal_pose3)
-
-    # goal_pose4 = PoseStamped()
-    # goal_pose4.header.frame_id = "map"
-    # goal_pose4.header.stamp = navigator.get_clock().now().to_msg()
-    # goal_pose4.pose.position.x = -0.17
-    # goal_pose4.pose.position.y = -1.0
-    # goal_pose4.pose.orientation.w = 1.0
-    # goal_pose4.pose.orientation.z = 0.04
-    # goal_poses.append(goal_pose3)
-
-    # goal_pose3.header.frame_id = "map"
-    # goal_pose3.header.stamp = navigator.get_clock().now().to_msg()
-    # goal_pose3.pose.position.x = -0.17
-    # goal_pose3.pose.position.y = -1.0
-    # goal_pose3.pose.orientation.w = 1.0
-    # goal_pose3.pose.orientation.z = 0.04
-    # goal_poses.append(goal_pose3)
-    #
-    # goal_pose3.header.frame_id = "map"
-    # goal_pose3.header.stamp = navigator.get_clock().now().to_msg()
-    # goal_pose3.pose.position.x = -0.17
-    # goal_pose3.pose.position.y = -1.0
-    # goal_pose3.pose.orientation.w = 1.0
-    # goal_pose3.pose.orientation.z = 0.04
-    # goal_poses.append(goal_pose3)
-
-    # sanity check a valid path exists
-    # path = navigator.getPath(initial_pose, goal_pose1)
+    # goal pose 1
+    goal_poses.append(new_pose(navigator, 0.7, -0.05, 0.0, 0.09))  # 1
+    goal_poses.append(new_pose(navigator, 1.1, -0.35, 0.70, -0.68))  # 2
+    # 3 struggle with a turn at end
+    goal_poses.append(new_pose(navigator, 1.18, -0.67, -0.76, 0.64))
+    # 4 dse a very wide turn hits wall  then cries before reaching
+    goal_poses.append(new_pose(navigator, 1.1, -0.95, -0.97, 0.22))
+    goal_poses.append(new_pose(navigator, 0.35, -0.95, -1.0, 0.03))
+    goal_poses.append(new_pose(navigator, -0.70, -1.0, 0.98, 0.18))  # 5
+    goal_poses.append(new_pose(navigator, -1.15, -0.55, 0.60, 0.80))  # 6
+    goal_poses.append(new_pose(navigator, -1.18, -0.20, 0.035, 0.95))
+    goal_poses.append(new_pose(navigator, -0.71, -0.12, 0.035, 0.95))
+    goal_poses.append(new_pose(navigator, -0.31, -0.14, -0.48, 0.88))
+    goal_poses.append(new_pose(navigator, -0.23, -0.48, -0.69, 0.72))
 
     nav_start = navigator.get_clock().now()
     navigator.followWaypoints(goal_poses)
@@ -136,23 +87,6 @@ def main():
                 + str(len(goal_poses))
             )
             now = navigator.get_clock().now()
-
-            # # Some navigation timeout to demo cancellation
-            # if now - nav_start > Duration(seconds=600):
-            #     navigator.cancelTask()
-
-            # # Some follow waypoints request change to demo preemption
-            # if now - nav_start > Duration(seconds=35):
-            #     goal_pose4 = PoseStamped()
-            #     goal_pose4.header.frame_id = "map"
-            #     goal_pose4.header.stamp = now.to_msg()
-            #     goal_pose4.pose.position.x = -5.0
-            #     goal_pose4.pose.position.y = -4.75
-            #     goal_pose4.pose.orientation.w = 0.707
-            #     goal_pose4.pose.orientation.z = 0.707
-            #     goal_poses = [goal_pose4]
-            #     nav_start = now
-            #     navigator.followWaypoints(goal_poses)
 
     # Do something depending on the return code
     result = navigator.getResult()
