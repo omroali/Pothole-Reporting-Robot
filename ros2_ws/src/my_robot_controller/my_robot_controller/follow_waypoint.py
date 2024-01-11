@@ -6,17 +6,24 @@ import rclpy
 from rclpy.node import Node
 from rclpy import qos
 from visualization_msgs.msg import MarkerArray
-
-from reportlab.pdfgen import canvas
-from reportlab.pdfbase.ttfonts import TTFont
-from reportlab.pdfbase import pdfmetrics
-from reportlab.lib import colors
-from reportlab.lib.pagesizes import letter
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
-
-from reportlab.lib import colors
-import json
 from datetime import datetime
+
+from reportlab.lib.pagesizes import letter
+from reportlab.lib import colors
+from reportlab.platypus import (
+    SimpleDocTemplate,
+    Table,
+    TableStyle,
+    Paragraph,
+    Image,
+    Spacer,
+)
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib.units import inch
+
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_agg import FigureCanvasAgg
+from io import BytesIO
 
 
 class WaypointReporterNode(Node):
@@ -37,7 +44,7 @@ class WaypointReporterNode(Node):
         self.get_logger().info("inside callback")
         self.markers = data.markers
         if self.complete:
-            report_data = [["idx", "x", "y", "size"]]
+            report_data = [["Pothole", "Position x", "Position y", "Size"]]
             for idx, marker in enumerate(self.markers):
                 self.get_logger().info(f"id: {marker.id}")
                 self.get_logger().info(f"x: {marker.pose.position.x}")
@@ -49,91 +56,99 @@ class WaypointReporterNode(Node):
                         idx,
                         round(marker.pose.position.x, 3),
                         round(marker.pose.position.y, 3),
-                        # "z": round(marker.pose.position.z, 3),
                         round(marker.scale.z * 2, 3),  # get diameter
                     ]
                 )
-            # self.generate_pothole_report(report_data)
-            print(report_data)
+            self.generate_pothole_report(report_data)
             self.destroy_node()
             rclpy.shutdown()
 
-    def generate_pothole_report(self, report_data):
-        print(report_data)
-        now = datetime.now()  # current date and time
-        date_time = now.strftime("%d-%M-%Y_%H-%M-%S")
+    def plot_data(self, data):
+        idx_values = [item[0] for item in data[1:]]
+        x_values = [item[1] for item in data[1:]]
+        y_values = [item[2] for item in data[1:]]
+        size_values = [item[3] for item in data[1:]]
 
-        file_name = f"pothole_report_{date_time}.pdf"
-        document_title = "sample"
-        title = "Robot Programming Assignment"
-        sub_title = "LIMO Pothole Evaluation"
+        # Create a scatter plot
+        plt.scatter(x_values, y_values, s=[s * 1000 for s in size_values], alpha=0.5)
 
-        # creating a pdf object
-        pdf = canvas.Canvas(file_name)
-        pdf.setTitle(document_title)
-        pdf.drawCentredString(300, 770, title)
-        pdf.setFillColorRGB(0, 0, 255)
-        pdf.setFont("Courier-Bold", 24)
-        pdf.drawCentredString(290, 720, sub_title)
+        # Load an image to use as the background
+        img_path = "src/my_robot_controller/resources/simple_pothole_world.png"
+        img = plt.imread(img_path)
 
-        pdf.line(30, 710, 550, 710)
-        text = pdf.beginText(40, 680)
-        text.setFont("Courier", 18)
-        text.setFillColor(colors.black)
-        # for line in report_data:
-        pdf.drawText(text)
+        # Display the image as the background
+        plt.imshow(
+            img,
+            extent=[-1.45, 1.45, -1.22, 0.175],
+            aspect="auto",
+            alpha=0.8,
+        )
+        plt.axis("off")
+        for i, txt in enumerate(idx_values):
+            plt.text(
+                x_values[i],
+                y_values[i],
+                str(txt),
+                fontsize=8,
+                ha="right",
+            )
 
-        # Define the table headers
-        table_headers = ["Pothole", "X", "Y", "Size"]
-        # Set the starting point for the table
-        x, y = 100, 700
+        buf = BytesIO()
+        canvas = FigureCanvasAgg(plt.gcf())
+        canvas.print_png(buf)
+        image_data = buf.getvalue()
+        image_reader = BytesIO(image_data)
+        plt.close()
+        return image_reader
 
-        # Extract data from the list of dictionaries
-        # table_data = [
-        #     [entry["idx"], entry["x"], entry["y"], entry["z"], entry["size"]]
-        #     for entry in report_data
-        # ]
+    def generate_pothole_report(self, data):
+        now = datetime.now()
+        datetime_file = now.strftime("%Y-%m-%d_%H-%M-%S")
+        datetime_title = now.strftime("%d/%m/%Y %H:%M:%S")
+        count = len(data) - 1
 
-        # Draw headers
-        for header in table_headers:
-            pdf.drawString(x, y, header)
-            x += 100
+        filename = f"pothole_report_{datetime_file}.pdf"
+        document = SimpleDocTemplate(filename, pagesize=letter)
 
-        # Draw data
-        y -= 20
-        for entry in report_data:
-            x = 100
-            y -= 20
-            for key in ["idx", "x", "y", "size"]:
-                pdf.drawString(x, y, str(entry[key]))
-                x += 100
+        page_width, page_height = letter
+        table_width = page_width - 2 * 72
+        elements = []
 
-        # Create the table
-        # table = Table([table_headers] + table_data)
-        #
-        # # Add style to the table
-        # style = TableStyle(
-        #     [
-        #         ("BACKGROUND", (0, 0), (-1, 0), colors.grey),
-        #         ("TEXTCOLOR", (0, 0), (-1, 0), colors.whitesmoke),
-        #         ("ALIGN", (0, 0), (-1, -1), "CENTER"),
-        #         ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
-        #         ("BOTTOMPADDING", (0, 0), (-1, 0), 12),
-        #         ("BACKGROUND", (0, 1), (-1, -1), colors.beige),
-        #         ("GRID", (0, 0), (-1, -1), 1, colors.black),
-        #     ]
-        # )
-        #
-        # table.setStyle(style)
+        title_style = getSampleStyleSheet()["Title"]
+        title_text = "Pothole Location Summary"
+        title = Paragraph(title_text, title_style)
+        elements.append(title)
 
-        # Build the PDF document
-        # pdf.build([table])
+        paragraph_style = getSampleStyleSheet()["BodyText"]
+        paragraph_text_1 = f"""
+            This summary was produced at {datetime_title}. A total of {count} potholes were detected on this run of the pothole detection. The table below lists the positions and sizes for these potholes.
+        """
+        paragraph_1 = Paragraph(paragraph_text_1, paragraph_style)
+        elements.append(paragraph_1)
+        elements.append(Spacer(1, 0.1 * inch))
 
-        # pdf.drawInlineImage(image, 130, 400)
-        pdf.save()
-        #     for idx, marker in enumerate(self.markers):
+        table = Table(data, colWidths=[table_width / len(data[0])] * len(data[0]))
+        style = TableStyle(
+            [
+                ("BACKGROUND", (0, 0), (-1, 0), colors.grey),
+                ("TEXTCOLOR", (0, 0), (-1, 0), colors.whitesmoke),
+                ("ALIGN", (0, 0), (-1, -1), "CENTER"),
+                ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
+                ("BOTTOMPADDING", (0, 0), (-1, 0), 4),
+                ("BACKGROUND", (0, 1), (-1, -1), colors.beige),
+            ]
+        )
 
-    #         self.get_logger().info(f"{idx}: {marker}")
+        table.setStyle(style)
+        elements.append(table)
+        paragraph_text_2 = """
+        The plot below visually overlaps the positions of the detected potholes as well as their sizes onto the world map.
+        """
+        paragraph_2 = Paragraph(paragraph_text_2, paragraph_style)
+        elements.append(paragraph_2)
+        image = Image(self.plot_data(data), width=400, height=200)
+        elements.append(image)
+        document.build(elements)
 
 
 def new_pose(
