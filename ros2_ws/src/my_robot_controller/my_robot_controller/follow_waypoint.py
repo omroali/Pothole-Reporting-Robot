@@ -30,7 +30,6 @@ class WaypointReporterNode(Node):
     def __init__(self):
         self.complete = False
         super().__init__("waypoint_navigation_node")
-        self.get_logger().info("inside node")
         self.markers = None
 
         self.pothole_marker_sub = self.create_subscription(
@@ -41,7 +40,6 @@ class WaypointReporterNode(Node):
         )
 
     def marker_callback(self, data):
-        self.get_logger().info("inside callback")
         self.markers = data.markers
         if self.complete:
             report_data = [["Pothole", "Position x", "Position y", "Size"]]
@@ -73,7 +71,7 @@ class WaypointReporterNode(Node):
         plt.scatter(x_values, y_values, s=[s * 1000 for s in size_values], alpha=0.5)
 
         # Load an image to use as the background
-        img_path = "src/my_robot_controller/resources/simple_pothole_world.png"
+        img_path = "src/my_robot_controller/resource/simple_pothole_world.png"
         img = plt.imread(img_path)
 
         # Display the image as the background
@@ -107,7 +105,7 @@ class WaypointReporterNode(Node):
         datetime_title = now.strftime("%d/%m/%Y %H:%M:%S")
         count = len(data) - 1
 
-        filename = f"pothole_report_{datetime_file}.pdf"
+        filename = f"summary_reports/pothole_report_{datetime_file}.pdf"
         document = SimpleDocTemplate(filename, pagesize=letter)
 
         page_width, page_height = letter
