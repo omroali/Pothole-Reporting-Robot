@@ -31,7 +31,7 @@ Your file structure should have both these folders on the same level. This is im
 │   ├── build
 │   └── ... 
 └── Pothole-Reporting-Robot
-    ├── src
+    ├── README.md
     ├── ros2_ws
     └── ... 
 ```
