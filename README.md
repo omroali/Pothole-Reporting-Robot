@@ -44,7 +44,7 @@ From here all that needs to be run is the the shell script. This will start up
 3. Launch the my_robot_bringup launch file
 4. Begin running follow_waypoint to begin recording the pothole position
 
-If zsh is installed on your system, this can be started by making sure it is executablea and simply running
+If zsh is installed on your system, this can be started by making sure it is executable and simply running the script
 ```
 chmod +x run_workspace.sh
 ./run_workspace.sh
