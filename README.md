@@ -14,50 +14,50 @@ This assumes that 'ros2 humble' is already installed onto the system this will r
 pip install reportlab
 
 
-from a desired directory you will need to clone the limo_ros2 repository and the Pothole-Reporting-Robot repository
+### running the code
+This has only been configured and tested on a native enviroment of ROS2.
+
+From a desired directory you will need to clone the limo_ros2 repository, as in the native instructions in https://github.com/LCAS/CMP9767_LIMO/wiki/Simulator-Setup.
+In a folder next to the limo_ros2 installation, clone the Pothole-Reporting-Robot repository
 ```
-git clone limo_ros2
-git clone Pothole-Reporting-Robot
+git clone https://github.com/Olseda20/Pothole-Reporting-Robot.git
 ```
-this should produce 2 files in parallel with a structure similar to this
+Your file structure should have both these folders on the same level. This is important due to how some of the automation of the pothole detection is being run.
 ```
 .
 ├── limo_ros2
-│   ├── build
+│   ├── src
 │   ├── install
-│   ├── log
-│   └── src
+│   ├── build
+│   └── ... 
 └── Pothole-Reporting-Robot
-    ├── build
-    ├── install
-    ├── log
+    ├── src
     ├── ros2_ws
-    └── src
+    └── ... 
 ```
-Once both directories are available change into the Pothole-Reporting-Robot directory.
+Once both directories are available 'cd' into the `Pothole-Reporting-Robot` directory.
 ```
 cd Pothole-Reporting-Robot
 ```
 
-From here all that needs to be run is the the shell script that will start up
+Ideally if the rviz2 config file could be loaded into rviz by default, this would be useful in seeing the markers of the pothole in realtime. However this information will be produced in the summary report.
+
+From here all that needs to be run is the the shell script. This will start up
 - Gazbo
 - Rviz2
 - Launch the my_robot_bringup launch file
-- Begin running follow_waypoint
+- Begin running follow_waypoint to begin recording the pothole position
 
 If zsh is installed on your system, this can be started by simply running
 ```
 ./run_workspace.sh
 ```
 
-otherwise use the bash variant instead
+otherwise use the bash variant
 ```
 ./run_workspace_bash.sh
 ```
 
-
-
-
-
-### requirements
+Now enjoy as the potholes are being detected and once this is complete you can navigate to the 
+`Pothole-Reporting-Robot/ros2_ws/summary_reports` directory to see the output of the detection.
 
