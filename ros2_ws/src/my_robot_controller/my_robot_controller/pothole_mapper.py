@@ -7,6 +7,7 @@ from custom_interfaces.msg import PotholeData
 
 from tf2_ros import Buffer, PoseStamped, TransformListener
 from tf2_geometry_msgs import do_transform_pose
+from time import sleep
 
 
 class MapperNode(Node):
@@ -15,8 +16,9 @@ class MapperNode(Node):
     MAX_POTHOLE_DISTANCE = 0.11
 
     def __init__(self):
-        super().__init__("pothole_reporter")
-        self.get_logger().info("Processing Pothole Data")
+        super().__init__("pothole_mapper")
+        self.get_logger().info("Starting Pothole Mapping")
+        sleep(5)  # allow the slam to orient properly
         self.pothole_storage = []
         self.markers = MarkerArray()
 

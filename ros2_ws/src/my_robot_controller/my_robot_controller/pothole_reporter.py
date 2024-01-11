@@ -26,10 +26,10 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg
 from io import BytesIO
 
 
-class WaypointReporterNode(Node):
+class PotholeReporterNode(Node):
     def __init__(self):
         self.complete = False
-        super().__init__("waypoint_navigation_node")
+        super().__init__("pothole_reporter")
         self.markers = None
 
         self.pothole_marker_sub = self.create_subscription(
@@ -166,7 +166,7 @@ def new_pose(
     return pose
 
 
-def send_navgation_waypoints(report_waypoint: WaypointReporterNode):
+def send_navgation_waypoints(report_potholes: PotholeReporterNode):
     navigator = BasicNavigator()
     origin_pose = new_pose(navigator, 0.0, 0.0, 0.0, 1.0)
     navigator.setInitialPose(origin_pose)
@@ -205,14 +205,14 @@ def send_navgation_waypoints(report_waypoint: WaypointReporterNode):
         return False
 
     print("All Waypoints have been reached, generating report now")
-    report_waypoint.complete = True
+    report_potholes.complete = True
 
 
 def main():
     rclpy.init()
-    report_waypoint = WaypointReporterNode()
-    send_navgation_waypoints(report_waypoint)
-    rclpy.spin(report_waypoint)
+    report_potholes = PotholeReporterNode()
+    send_navgation_waypoints(report_potholes)
+    rclpy.spin(report_potholes)
     rclpy.shutdown()
 
 
