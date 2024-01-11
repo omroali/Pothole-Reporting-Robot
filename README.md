@@ -46,15 +46,15 @@ From here all that needs to be run is the the shell script. This will start up
 
 If zsh is installed on your system, this can be started by making sure it is executable and simply running the script
 ```
-chmod +x run_workspace.sh
-./run_workspace.sh
+chmod +x run_pothole_detector.sh
+./run_pothole_detector.sh
 ```
 Otherwise use the bash variant
 ```
-chmod +x run_workspace_bash.sh
-./run_workspace_bash.sh
+chmod +x run_pothole_detector_bash.sh
+./run_pothole_detector_bash.sh
 ```
 
-Now enjoy as the potholes are being detected. Once this is complete, navigate to the 
-`Pothole-Reporting-Robot/ros2_ws/summary_reports` directory to see the output of the detection.
+Now enjoy as the potholes are being detected.   
+Once this is complete, navigate to the directory `Pothole-Reporting-Robot/ros2_ws/summary_reports` to see the output of the detection.
 
