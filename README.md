@@ -56,6 +56,8 @@ chmod +x run_pothole_detector_bash.sh
 Now enjoy as the potholes are being detected.   
 Once this is complete, navigate to the directory `Pothole-Reporting-Robot/ros2_ws/summary_reports` to see the output of the detection.
 
+A demo run can be seen here: https://www.youtube.com/watch?v=fvODO8_kK-I
+
 ---
 ### To manually deploy the parts 
 If you would like to run the different sections independently, navigate to the `Pothole-Reporting-Robot/ros2_ws` directory and run:
