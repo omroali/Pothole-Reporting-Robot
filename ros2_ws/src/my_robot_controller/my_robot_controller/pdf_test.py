@@ -8,6 +8,7 @@ from reportlab.platypus import (
     Paragraph,
     Image,
     Spacer,
+    PageTemplate
 )
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.units import inch
@@ -58,6 +59,13 @@ data = [
 ]
 
 
+def header(canvas, doc):
+    canvas.saveState()
+    canvas.setFont("Helvetica-Bold", 12)
+    canvas.drawString(inch, letter[1] - 0.75 * inch, "Robot Programming Assignment")
+    canvas.restoreState()
+
+
 def make_pdf(data):
     # Create a PDF document
     pdf_filename = "output.pdf"
@@ -66,9 +74,10 @@ def make_pdf(data):
     page_width, page_height = letter
     table_width = page_width - 2 * 72
     elements = []
+    document.addPageTemplates([PageTemplate(id="header", frames=[header])])
 
     title_style = getSampleStyleSheet()["Title"]
-    title_text = "Your Title"
+    title_text = "Pothole Reporter"
     title = Paragraph(title_text, title_style)
     elements.append(title)
 
