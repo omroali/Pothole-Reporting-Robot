@@ -19,7 +19,7 @@ from tf2_geometry_msgs import do_transform_pose
 class PotholeNode(Node):
     COLOR_TO_DEPTH_ASPECT = 1.0
     MIN_DEPTH = 0.15
-    MAX_DEPTH = 0.7
+    MAX_DEPTH = 0.9
     X_PROCCESABLE = 10
     Y_PROCESSABLE = 20
     POTHOLE_BRG_LOWER = np.array([150, 0, 100])
@@ -144,7 +144,7 @@ class PotholeNode(Node):
             bottom_right_coords = (x + w, y + h)
             try:
                 top_left_depth = self.get_depth((y, x), image_depth, image)
-                bottom_left_depth = self.get_depth((y + h, x + w), image_depth, image)
+                bottom_right_depth = self.get_depth((y + h, x + w), image_depth, image)
             except Exception as e:
                 self.get_logger().warning(f"Failed to evaluate depth_value: {str(e)}")
                 continue
@@ -152,7 +152,7 @@ class PotholeNode(Node):
                 top_left_coords, top_left_depth
             )
             bottom_right = self.project_relative_robot_coords(
-                bottom_right_coords, bottom_left_depth
+                bottom_right_coords, bottom_right_depth
             )
             pothole_width = abs(bottom_right[1] - top_left[1])
             pothole_height = abs(bottom_right[0] - top_left[0])

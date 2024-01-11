@@ -22,12 +22,12 @@ sleep 1
 gnome-terminal --tab --title="$RVIZ" -- zsh -c "ros2 launch limo_navigation limo_navigation.launch.py map:=../maps/simple_map.yaml params_file:=/home/krono/dev/RobotProgramming/Pothole-Reporting-Robot/params/nav2_params.yaml use_sim_time:=true; zsh -i" &
 sleep 10
 
-gnome-terminal --title="Pothole Reporter" -- zsh -c "ros2 launch my_robot_bringup pothole_detection_demo.launch.py; zsh -i"
+gnome-terminal --tab --title="Pothole Reporter" -- zsh -c "ros2 launch my_robot_bringup pothole_detection_demo.launch.py; zsh -i"
 sleep 10
-ros2 run my_robot_controller follow_waypoint
+# ros2 run my_robot_controller follow_waypoint
 
-# SEND_WAYPOINTS="Detecting"
-# gnome-terminal --tab --title="$SEND_WAYPOINTS" -- zsh -c "ros2 run my_robot_controller follow_waypoint; zsh -i"
+SEND_WAYPOINTS="Detecting"
+gnome-terminal --title="$SEND_WAYPOINTS" -- zsh -c "ros2 run my_robot_controller follow_waypoint; zsh -i"
 #
 #
 # # Wait for the terminal to be killed

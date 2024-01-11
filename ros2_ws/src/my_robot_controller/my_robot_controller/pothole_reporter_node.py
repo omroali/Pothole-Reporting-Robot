@@ -65,7 +65,7 @@ class ReporterNode(Node):
         if radius >= self.MAX_POTHOLE_RADIUS or radius < self.MIN_POTHOLE_RADIUS:
             return False
 
-        for pothole in self.pothole_storage:
+        for idx, pothole in enumerate(self.pothole_storage):
             bound_radius = max(pothole["radius"], self.MAX_POTHOLE_DISTANCE)
             # if the pothole is within a specified radius, remove it
             if x > (pothole["x"] - bound_radius) and x < (pothole["x"] + bound_radius):
@@ -73,12 +73,19 @@ class ReporterNode(Node):
                     pothole["y"] + bound_radius
                 ):
                     if pothole["radius"] < radius:
-                        # updating for improved position information
-                        pothole["x"] = x
-                        pothole["y"] = y
-                        pothole["radius"] = radius
+                        # updating the node position when we find a larger radius
+                        self.update_pothole(idx, pothole_pose, radius)
                     return False
         return True
+
+    def update_pothole(self, idx, pose, radius):
+        for marker in self.markers.markers:
+            if marker.id == idx:
+                marker.action = Marker.MODIFY
+                marker.pose = pose
+                marker.scale.x = radius * 2
+                marker.scale.z = radius * 2
+        self.pothole_marker.publish(self.markers)
 
     def store_pothole(self, publish_position, radius):
         pose = publish_position.pose
