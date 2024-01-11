@@ -1,10 +1,6 @@
 #!/bin/bash
 
 # Change to the workspace directory
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-
-# Change to the script's directory
-cd "$SCRIPT_DIR" || exit
 cd ros2_ws
 
 # Build the project using colcon

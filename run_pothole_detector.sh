@@ -1,10 +1,6 @@
 #!/bin/zsh
 
-# Get the directory where the script is located
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-
-# Change to the script's directory
-cd "$SCRIPT_DIR" || exit
+# Change to the workspace directory
 cd ros2_ws
 
 # Build the project using colcon
