@@ -1,6 +1,10 @@
 #!/bin/zsh
 
-# Change to the workspace directory
+# Get the directory where the script is located
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+
+# Change to the script's directory
+cd "$SCRIPT_DIR" || exit
 cd ros2_ws
 
 # Build the project using colcon
@@ -21,9 +25,4 @@ gnome-terminal --tab --title="$RVIZ" -- zsh -c "ros2 launch limo_navigation limo
 sleep 10
 
 # Running launch file to begin the pothile detection
-gnome-terminal --tab --title="Pothole Reporter" -- zsh -c "ros2 launch my_robot_bringup pothole_detection_demo.launch.py; zsh -i"
-sleep 10
-
-# runing waypoint detection in another window to view the data separatelt from the detection
-SEND_WAYPOINTS="Detecting"
-gnome-terminal --title="$SEND_WAYPOINTS" -- zsh -c "ros2 run my_robot_controller follow_waypoint; zsh -i"
+ros2 launch my_robot_bringup pothole_detection_demo.launch.py

@@ -1,6 +1,10 @@
 #!/bin/bash
 
 # Change to the workspace directory
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Change to the script's directory
+cd "$SCRIPT_DIR" || exit
 cd ros2_ws
 
 # Build the project using colcon
@@ -21,10 +25,4 @@ gnome-terminal --tab --title="$RVIZ" -- bash -c "ros2 launch limo_navigation lim
 sleep 10
 
 # Running launch file to begin the pothile detection
-gnome-terminal --tab --title="Pothole Reporter" -- bash -c "ros2 launch my_robot_bringup pothole_detection_demo.launch.py; bash" &
-sleep 10
-
-# Running waypoint detection in another window to view the data separately from the detection
-SEND_WAYPOINTS="Detecting"
-gnome-terminal --title="$SEND_WAYPOINTS" -- bash -c "ros2 run my_robot_controller follow_waypoint; bash"
-
+ros2 launch my_robot_bringup pothole_detection_demo.launch.py

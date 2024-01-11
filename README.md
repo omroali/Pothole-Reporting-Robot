@@ -55,6 +55,6 @@ chmod +x run_workspace_bash.sh
 ./run_workspace_bash.sh
 ```
 
-Now enjoy as the potholes are being detected. Once this is complete you can navigate to the 
+Now enjoy as the potholes are being detected. Once this is complete, navigate to the 
 `Pothole-Reporting-Robot/ros2_ws/summary_reports` directory to see the output of the detection.
 

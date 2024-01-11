@@ -9,12 +9,16 @@ def generate_launch_description():
         package="my_robot_controller", executable="simple_pothole_detector"
     )
 
-    waypoint_node = Node(package="my_robot_controller", executable="follow_waypoint")
+    pothole_mapper_node = Node(
+        package="my_robot_controller", executable="pothole_mapper"
+    )
 
-    reporter_node = Node(package="my_robot_controller", executable="pothole_reporter")
+    pothole_reporter_node = Node(
+        package="my_robot_controller", executable="pothole_reporter"
+    )
 
     ld.add_action(simple_detector_node)
-    # ld.add_action(waypoint_node)
-    ld.add_action(reporter_node)
+    ld.add_action(pothole_mapper_node)
+    ld.add_action(pothole_reporter_node)
 
     return ld

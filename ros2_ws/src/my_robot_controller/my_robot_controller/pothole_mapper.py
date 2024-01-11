@@ -9,7 +9,7 @@ from tf2_ros import Buffer, PoseStamped, TransformListener
 from tf2_geometry_msgs import do_transform_pose
 
 
-class ReporterNode(Node):
+class MapperNode(Node):
     MIN_POTHOLE_RADIUS = 0.015
     MAX_POTHOLE_RADIUS = 0.085
     MAX_POTHOLE_DISTANCE = 0.11
@@ -141,7 +141,7 @@ class ReporterNode(Node):
 
 def main(args=None):
     rclpy.init(args=args)
-    node = ReporterNode()
+    node = MapperNode()
     rclpy.spin(node)
     rclpy.shutdown()
 

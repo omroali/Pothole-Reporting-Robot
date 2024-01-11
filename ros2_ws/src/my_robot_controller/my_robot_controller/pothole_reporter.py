@@ -171,41 +171,37 @@ def send_navgation_waypoints(report_waypoint: WaypointReporterNode):
     origin_pose = new_pose(navigator, 0.0, 0.0, 0.0, 1.0)
     navigator.setInitialPose(origin_pose)
     navigator.waitUntilNav2Active()
-    goal_poses = []
+    goal_poses = [
+        new_pose(navigator, 0.8, 0.00, 0.0, 0.8),
+        new_pose(navigator, 1.2, -0.15, 0.70, -0.68),
+        new_pose(navigator, 1.1, -0.95, -0.97, 0.22),
+        new_pose(navigator, 0.35, -0.95, -1.0, 0.03),
+        new_pose(navigator, -0.70, -1.0, 0.98, 0.18),
+        new_pose(navigator, -1.15, -0.55, 0.60, 0.80),
+        new_pose(navigator, -1.18, -0.20, 0.15, 0.95),
+        new_pose(navigator, -0.71, -0.12, 0.035, 0.95),
+        new_pose(navigator, -0.22, -0.20, -0.48, 0.88),
+        new_pose(navigator, -0.15, -0.50, -0.7, 0.7),
+    ]
 
-    goal_poses.append(new_pose(navigator, 0.8, 0.00, 0.0, 0.8))
-    goal_poses.append(new_pose(navigator, 1.2, -0.15, 0.70, -0.68))
-    goal_poses.append(new_pose(navigator, 1.1, -0.95, -0.97, 0.22))
-    goal_poses.append(new_pose(navigator, 0.35, -0.95, -1.0, 0.03))
-    goal_poses.append(new_pose(navigator, -0.70, -1.0, 0.98, 0.18))
-    goal_poses.append(new_pose(navigator, -1.15, -0.55, 0.60, 0.80))
-    goal_poses.append(new_pose(navigator, -1.18, -0.20, 0.15, 0.95))  # cries
-    goal_poses.append(new_pose(navigator, -0.71, -0.12, 0.035, 0.95))
-    # goal_poses.append(new_pose(navigator, -0.31, -0.14, -0.48, 0.88))
-    goal_poses.append(new_pose(navigator, -0.22, -0.20, -0.48, 0.88))
-    goal_poses.append(new_pose(navigator, -0.15, -0.50, -0.7, 0.7))
-
-    nav_start = navigator.get_clock().now()
     navigator.followWaypoints(goal_poses)
-
-    i = 0
+    feedback_prev = navigator.getFeedback()
     while not navigator.isTaskComplete():
-        i = i + 1
         feedback = navigator.getFeedback()
-        if feedback and i % 5 == 0:
-            print(
+        if feedback_prev and feedback != feedback_prev:
+            navigator.get_logger().info(
                 "Executing current waypoint: "
                 + str(feedback.current_waypoint + 1)
                 + "/"
                 + str(len(goal_poses))
             )
-            now = navigator.get_clock().now()
+        feedback_prev = feedback
 
     result = navigator.getResult()
     navigator.lifecycleShutdown()
 
     if result != TaskResult.SUCCEEDED:
-        print("Task was not successful")
+        navigator.get_logger().warning("Waypoint could not be reached!")
         return False
 
     print("All Waypoints have been reached, generating report now")
