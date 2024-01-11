@@ -4,9 +4,10 @@ This repository contains my implementation of a pothole detector using the provi
 # Guideline to run the code
 This assumes that `ros2 humble` is already installed onto the system this will run on. This has also only been configured and tested on a native enviroments of ROS2.
 
-### Additional requirements include
+### Additional python packages to include
 ```shell
 pip install reportlab
+pip install matplotlib
 ```
 
 ### Configuration
@@ -55,7 +56,8 @@ chmod +x run_pothole_detector_bash.sh
 Now enjoy as the potholes are being detected.   
 Once this is complete, navigate to the directory `Pothole-Reporting-Robot/ros2_ws/summary_reports` to see the output of the detection.
 
-
+---
+### To manually deploy the parts 
 If you would like to run the different sections independently, navigate to the `Pothole-Reporting-Robot/ros2_ws` directory and run:
 For every new terminal, please made sure all of the `source` setups files are being run. 
 Note: please use the correct setup for your interpreter
